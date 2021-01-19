@@ -44,6 +44,9 @@
     <ClCompile Include="system_stm32wbxx.c">
       <Filter>Source files\Device-specific files</Filter>
     </ClCompile>
+    <ClCompile Include="Serial.c">
+      <Filter>Source files\Project</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="stm32wb.props">

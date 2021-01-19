@@ -44,8 +44,8 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|VisualGDB'">
     <ClCompile>
       <CPPLanguageStandard>GNUPP1Z</CPPLanguageStandard>
-      <AdditionalIncludeDirectories>C:\Users\Rebel\AppData\Local\VisualGDB\EmbeddedBSPs\arm-eabi\com.sysprogs.arm.stm32wb\STM32WBxxxx\CMSIS_HAL\Device\ST\STM32WBxx\Include;C:\Users\Rebel\AppData\Local\VisualGDB\EmbeddedBSPs\arm-eabi\com.sysprogs.arm.stm32wb\STM32WBxxxx\CMSIS_HAL\Core\Include;%(ClCompile.AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>DEBUG=1;STM32WB50xx;%(ClCompile.PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>C:\Users\Rebel\AppData\Local\VisualGDB\EmbeddedBSPs\arm-eabi\com.sysprogs.arm.stm32wb\STM32WBxxxx\CMSIS_HAL\Device\ST\STM32WBxx\Include;C:\Users\Rebel\AppData\Local\VisualGDB\EmbeddedBSPs\arm-eabi\com.sysprogs.arm.stm32wb\STM32WBxxxx\CMSIS_HAL\Core\Include;../../../../Sources/Codes/Libraries/C_C++/IO;../../../../Sources/Codes/Libraries/C_C++/Common;../CommonLibs;../../../../Sources/Codes/Libraries/C_C++/Periphery/;%(ClCompile.AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>DEBUG=1;STM32WB55xx;%(ClCompile.PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <AdditionalLinkerInputs>;%(Link.AdditionalLinkerInputs)</AdditionalLinkerInputs>
@@ -66,6 +66,7 @@
   </ImportGroup>
   <ItemGroup>
     <ClCompile Include="main.c" />
+    <ClCompile Include="Serial.c" />
     <ClCompile Include="system_stm32wbxx.c" />
     <None Include="stm32wb.props" />
     <ClCompile Include="$(BSP_ROOT)\STM32WBxxxx\StartupFiles\startup_stm32wb55xx_cm4.c" />
