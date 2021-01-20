@@ -12,23 +12,20 @@
     <Filter Include="Source files\Device-specific files">
       <UniqueIdentifier>{d7062176-0433-40a6-9c0b-0e92b638c3cd}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header files\Device-specific files">
-      <UniqueIdentifier>{464e4069-a583-4aea-be6c-99b8023ca20b}</UniqueIdentifier>
-    </Filter>
     <Filter Include="VisualGDB settings">
       <UniqueIdentifier>{a7cbe745-7fcf-482b-984a-6ed1964497c3}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source files\Project">
       <UniqueIdentifier>{cb1a8189-ebc3-4f0d-9b22-a037717de9ac}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header files\Project">
+      <UniqueIdentifier>{e928d4d7-3dcb-4a92-942b-a34143a4b56c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(BSP_ROOT)\STM32WBxxxx\StartupFiles\startup_stm32wb55xx_cm4.c">
       <Filter>Source files\Device-specific files</Filter>
     </ClCompile>
-    <ClInclude Include="stm32wbxx_hal_conf.h">
-      <Filter>Header files</Filter>
-    </ClInclude>
     <None Include="BLEcustom-Debug.vgdbsettings">
       <Filter>VisualGDB settings</Filter>
     </None>
@@ -47,10 +44,18 @@
     <ClCompile Include="Serial.c">
       <Filter>Source files\Project</Filter>
     </ClCompile>
+    <ClCompile Include="SMPS.c">
+      <Filter>Source files\Project</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="stm32wb.props">
       <Filter>VisualGDB settings</Filter>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="SMPS.h">
+      <Filter>Header files\Project</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

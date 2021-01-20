@@ -45,7 +45,7 @@
     <ClCompile>
       <CPPLanguageStandard>GNUPP1Z</CPPLanguageStandard>
       <AdditionalIncludeDirectories>C:\Users\Rebel\AppData\Local\VisualGDB\EmbeddedBSPs\arm-eabi\com.sysprogs.arm.stm32wb\STM32WBxxxx\CMSIS_HAL\Device\ST\STM32WBxx\Include;C:\Users\Rebel\AppData\Local\VisualGDB\EmbeddedBSPs\arm-eabi\com.sysprogs.arm.stm32wb\STM32WBxxxx\CMSIS_HAL\Core\Include;../../../../Sources/Codes/Libraries/C_C++/IO;../../../../Sources/Codes/Libraries/C_C++/Common;../CommonLibs;../../../../Sources/Codes/Libraries/C_C++/Periphery/;%(ClCompile.AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>DEBUG=1;STM32WB55xx;%(ClCompile.PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>DEBUG=1;STM32WB55xx;USE_FULL_ASSERT;USE_STDPERIPH_DRIVER;%(ClCompile.PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <AdditionalLinkerInputs>;%(Link.AdditionalLinkerInputs)</AdditionalLinkerInputs>
@@ -60,6 +60,7 @@
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="SMPS.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
@@ -67,10 +68,10 @@
   <ItemGroup>
     <ClCompile Include="main.c" />
     <ClCompile Include="Serial.c" />
+    <ClCompile Include="SMPS.c" />
     <ClCompile Include="system_stm32wbxx.c" />
     <None Include="stm32wb.props" />
     <ClCompile Include="$(BSP_ROOT)\STM32WBxxxx\StartupFiles\startup_stm32wb55xx_cm4.c" />
-    <ClInclude Include="stm32wbxx_hal_conf.h" />
     <None Include="BLEcustom-Debug.vgdbsettings" />
     <None Include="BLEcustom-Release.vgdbsettings" />
     <None Include="stm32wb.xml" />
