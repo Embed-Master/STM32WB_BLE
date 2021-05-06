@@ -67,8 +67,6 @@
     <ClCompile Include="Project\BLE\BLEList.cpp" />
     <ClCompile Include="Project\BLE\Hardware\CPU2.cpp" />
     <ClCompile Include="Project\BLE\TL.cpp" />
-    <ClCompile Include="Project\Debug.cpp" />
-    <ClCompile Include="Project\HRS.cpp" />
     <ClCompile Include="system_stm32wbxx.c" />
     <ClInclude Include="app_conf.h" />
     <ClInclude Include="FreeRTOSdebug.h" />
@@ -76,7 +74,6 @@
     <ClInclude Include="IPCC.h" />
     <ClInclude Include="Project\BLE\config.h" />
     <ClInclude Include="Project\FreeRTOSConfig.h" />
-    <ClInclude Include="Project\Settings.h" />
     <ClInclude Include="SMPS.h" />
     <None Include="$(BSP_ROOT)\FreeRTOS\License\license.txt" />
     <ClCompile Include="$(BSP_ROOT)\FreeRTOS\Source\croutine.c" />
