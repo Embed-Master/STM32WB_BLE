@@ -17,5 +17,5 @@ void SystemInit(void)
 	RCC->CFGR = RCC_CFGR_PPRE2F | RCC_CFGR_PPRE1F | RCC_CFGR_HPREF | RCC_CFGR_SW_1;
 	while ((RCC->CFGR & RCC_CFGR_SWS) != RCC_CFGR_SWS_1) ;
 	
-	RCC->CR &= ~RCC_CR_MSION;
+//	RCC->CR &= ~RCC_CR_MSION;
 }

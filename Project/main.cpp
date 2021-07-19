@@ -6,9 +6,9 @@
 
 int main(void)
 {
-	SMPS::init(SMPS::Voltage::_1V40, SMPS::Current::_80MA, SMPS::Source::HSE);
+	serial.sendLine("Program started");
+//	SMPS::init(SMPS::Voltage::_1V40, SMPS::Current::_80MA, SMPS::Source::HSE);
 	BLE::init();
-	
 	vTaskStartScheduler();
 	
 	while (true) ;

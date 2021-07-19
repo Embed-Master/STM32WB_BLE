@@ -54,19 +54,19 @@ void CPU2::enable()
 
 void CPU2::setup()
 {
-//	DebugInitCmdPacket debugCmdPacket =
-//	{
-//		{ { 0, 0, 0 } },
-//		{
-//			(byte *)gpioConfigList,
-//			(byte *)&tracesConfig,
-//			(byte *)&generalConfig,
-//			GPIO_CFG_NBR_OF_FEATURES,
-//			NBR_OF_TRACES_CONFIG_PARAMETERS,
-//			NBR_OF_GENERAL_CONFIG_PARAMETERS 
-//		}
-//	};
-//
+	DebugInitCmdPacket debugCmdPacket =
+	{
+		{ { 0, 0, 0 } },
+		{
+			(byte *)gpioConfigList,
+			(byte *)&tracesConfig,
+			(byte *)&generalConfig,
+			GPIO_CFG_NBR_OF_FEATURES,
+			NBR_OF_TRACES_CONFIG_PARAMETERS,
+			NBR_OF_GENERAL_CONFIG_PARAMETERS 
+		}
+	};
+
 //	DebugInitCmdPacket *pCmdPacket = &debugCmdPacket;
 //	byte local_buffer[TL_BLEEVT_CS_BUFFER_SIZE];
 //	TL_EvtPacket_t * p_rsp;

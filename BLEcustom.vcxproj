@@ -75,6 +75,7 @@
     <ClInclude Include="HwSemaphore.h" />
     <ClInclude Include="IPCC.h" />
     <ClInclude Include="Project\BLE\config.h" />
+    <ClInclude Include="Project\Debug.h" />
     <ClInclude Include="Project\FreeRTOSConfig.h" />
     <ClInclude Include="Project\Settings.h" />
     <ClInclude Include="SMPS.h" />

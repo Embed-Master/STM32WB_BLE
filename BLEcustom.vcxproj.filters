@@ -774,5 +774,8 @@
     <ClInclude Include="Project\Settings.h">
       <Filter>Header files\Project</Filter>
     </ClInclude>
+    <ClInclude Include="Project\Debug.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

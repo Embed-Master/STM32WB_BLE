@@ -311,8 +311,8 @@ private:
 		static void eventTrace(EvtPacket *evt);
 		static void responseTrace(EvtPacket *evt);
 		static void eventHandler(void *args);
-		static void cmdEventCallback();
 		static void eventCallback();
+		static void cmdEventCallback();
 		
 	public:
 		enum class Opcode : ushort

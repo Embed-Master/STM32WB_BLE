@@ -10,8 +10,8 @@
 /******************************************************************************
  * GENERAL
  ******************************************************************************/
-PLACE_IN_SECTION("MAPPING_TABLE") TL::RefTable	TL::refTable;
-PLACE_IN_SECTION("MEM1") ALIGN(4) TL::Mailbox	TL::mailbox;
+PLACE_IN_SECTION("MAPPING_TABLE") TL::RefTable		TL::refTable;
+PLACE_IN_SECTION("MB_MEM1") ALIGN(4) TL::Mailbox	TL::mailbox;
 
 /******************************************************************************
  * SYSTEM
@@ -60,7 +60,7 @@ PLACE_IN_SECTION("BLE_DRIVER_CONTEXT") TL::HCI::Service::DeviceInfoContext TL::H
  * MEMORY MANAGER
  ******************************************************************************/
 PLACE_IN_SECTION("MB_MEM2") ALIGN(4) byte TL::MemoryManager::evtPool[TL::MemoryManager::poolSize];
-PLACE_IN_SECTION("MB_MEM2") ALIGN(4) byte TL::MemoryManager::systemSpareEvtBuffer[sizeof(TL::PacketHeader) + TL_EVT_HDR_SIZE + 255U];
+PLACE_IN_SECTION("MB_MEM2") ALIGN(4) byte TL::MemoryManager::systemSpareEvtBuffer[sizeof(TL::PacketHeader) + TL_EVT_HDR_SIZE + 255];
 PLACE_IN_SECTION("MB_MEM2") ALIGN(4) byte TL::MemoryManager::bleSpareEvtBuffer[sizeof(TL::PacketHeader) + TL_EVT_HDR_SIZE + 255];
 PLACE_IN_SECTION("MB_MEM1") ALIGN(4) List::Node  TL::MemoryManager::freeBufQueue;
 List::Node TL::MemoryManager::localFreeBufQueue;
@@ -110,16 +110,16 @@ void TL::secondStageInit()
 
 void TL::init(const Config *config)
 {
-	refTable.info = &mailbox.info;
-	refTable.ble = &mailbox.ble;
-	refTable.thread = &mailbox.thread;
-	refTable.lldTests = &mailbox.lldTests;
-	refTable.lldBle = &mailbox.lldBle;
-	refTable.system = &mailbox.system;
-	refTable.memoryManager = &mailbox.memManager;
-	refTable.trace = &mailbox.traces;
-	refTable.mac_802_15_4 = &mailbox.mac_802_15_4;
-	refTable.zigbee = &mailbox.zigbee;
+	refTable.info			= &mailbox.info;
+	refTable.ble			= &mailbox.ble;
+	refTable.thread			= &mailbox.thread;
+	refTable.lldTests		= &mailbox.lldTests;
+	refTable.lldBle			= &mailbox.lldBle;
+	refTable.system			= &mailbox.system;
+	refTable.memoryManager	= &mailbox.memManager;
+	refTable.trace			= &mailbox.traces;
+	refTable.mac_802_15_4	= &mailbox.mac_802_15_4;
+	refTable.zigbee			= &mailbox.zigbee;
 	IPCCm::init();
 	SHCI::init(secondStageInit);
 	MemoryManager::init();
@@ -187,11 +187,6 @@ void TL::SHCI::eventHandler(void *args)
 	}
 }
 
-void TL::SHCI::cmdEventCallback()
-{
-
-}
-
 void TL::SHCI::eventCallback()
 {
 	while (!List::empty(&evtQueue))
@@ -201,6 +196,11 @@ void TL::SHCI::eventCallback()
 		List::insertTail(&asynchEventQueue, (List::Node *)evt);
 		portYIELD_FROM_ISR(xTaskResumeFromISR(eventHandlerHandle));
 	}
+}
+
+void TL::SHCI::cmdEventCallback()
+{
+
 }
 
 void TL::SHCI::send(ushort cmdCode, byte length, byte * payload, EvtPacket * evt)
