@@ -1,6 +1,13 @@
 #pragma once
 
 /******************************************************************************
+ * Stack settings
+ ******************************************************************************/
+// Max number - max priority
+#define FREERTOS_PRIORITY_BLE	2
+#define STACK_VERSION			0.8
+
+/******************************************************************************
  * Transport Layer
  ******************************************************************************/
 /**
@@ -145,11 +152,11 @@
 #define BLE_CFG_HR_SENSOR_APPEARANCE                (832)
 #define BLE_CFG_GAP_APPEARANCE                      (BLE_CFG_HR_SENSOR_APPEARANCE)
 
-/* HCI parameters length */
-#define HCI_COMMAND_MAX_PARAM_LEN        255
-
 /* Maximum parameter size of BLE commands.*/
-#define BLE_CMD_MAX_PARAM_LEN						HCI_COMMAND_MAX_PARAM_LEN
+#define BLE_CMD_MAX_PARAM_LEN			HCI_COMMAND_MAX_PARAM_LEN
+
+/* Maximum parameter size of BLE responses/events.*/
+#define BLE_EVT_MAX_PARAM_LEN			HCI_EVENT_MAX_PARAM_LEN
 
 /* Configuration values.
  * See aci_hal_write_config_data().
@@ -180,13 +187,6 @@
 * Encryption root key used to derive LTK and CSRK
 */
 #define CFG_BLE_ERK     {0xfe,0xdc,0xba,0x09,0x87,0x65,0x43,0x21,0xfe,0xdc,0xba,0x09,0x87,0x65,0x43,0x21}
-
-/* GAP Roles
- */
-#define GAP_PERIPHERAL_ROLE		0x01
-#define GAP_BROADCASTER_ROLE	0x02
-#define GAP_CENTRAL_ROLE		0x04
-#define GAP_OBSERVER_ROLE		0x08
 
 /**
  * Define PHY
@@ -242,7 +242,7 @@
 #define CFG_KEYPRESS_NOT_SUPPORTED      (0x00)
 #define CFG_KEYPRESS_SUPPORTED          (0x01)
 
-#define CFG_KEYPRESS_NOTIFICATION_SUPPORT             CFG_KEYPRESS_NOT_SUPPORTED
+#define CFG_KEYPRESS_NOTIFICATION_SUPPORT		CFG_KEYPRESS_NOT_SUPPORTED
 
 /* Bluetooth address types
  */
@@ -253,17 +253,25 @@
 #define NON_RESOLVABLE_PRIVATE_ADDR            3
 
 /******************************************************************************
- * Device Information Service (DIS)
+ * Services
  ******************************************************************************/
-/**< Options: Supported(1) or Not Supported(0) */
-#define BLE_CFG_DIS_MANUFACTURER_NAME_STRING                                   1
-#define BLE_CFG_DIS_MODEL_NUMBER_STRING                                        0
-#define BLE_CFG_DIS_SERIAL_NUMBER_STRING                                       0
-#define BLE_CFG_DIS_HARDWARE_REVISION_STRING                                   0
-#define BLE_CFG_DIS_FIRMWARE_REVISION_STRING                                   0
-#define BLE_CFG_DIS_SOFTWARE_REVISION_STRING                                   0
-#define BLE_CFG_DIS_SYSTEM_ID                                                  0
-#define BLE_CFG_DIS_IEEE_CERTIFICATION                                         0
-#define BLE_CFG_DIS_PNP_ID                                                     0
+#define BLE_CFG_SVCCTL_MAX						1
+#define BLE_CFG_CLT_MAX							0
 
-#define BLE_CFG_SVCCTL_MAX 8
+/* Type of service (primary or secondary
+ */
+#define PRIMARY_SERVICE							0x01
+#define SECONDARY_SERVICE						0x02
+
+/**
+ * Define Advertising parameters
+ */
+#define CFG_FAST_CONN_ADV_INTERVAL_MIN    (0x80)   /**< 80ms */
+#define CFG_FAST_CONN_ADV_INTERVAL_MAX    (0xa0)  /**< 100ms */
+#define CFG_LP_CONN_ADV_INTERVAL_MIN      (0x640) /**< 1s */
+#define CFG_LP_CONN_ADV_INTERVAL_MAX      (0xfa0) /**< 2.5s */
+
+/**
+ * P2P Service
+ */
+#define P2P_PARAMETER_CNT 15

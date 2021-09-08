@@ -1,9 +1,0 @@
-1. Инициализируется таблица TL TL_Init();
-2. В ОС закидывается shci_user_evt_proc()
-3. Вызывается функция shci_init(void(* UserEvtRx)(void* pData), void* pConf), в нее укладываются:
-	APPE_SysUserEvtRx - кака-то функция.
-	SHci_Tl_Init_Conf (в которой сидит указатель на функцию колбека (unused) и указатель на структуру команды с payload)
-
-	В ф-ии колбек сохраняется в переменную shciContext.UserEvtRx
-	Регистрируется Шина IO через shci_register_io_bus() -> в структуру просто записываются указатели на какие-то функции
-4.

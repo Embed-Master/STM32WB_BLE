@@ -2,11 +2,6 @@
 
 #include "Types.h"
 
-/**
- *********************************************************************************
- * IPCC CHANNELS
- *********************************************************************************
- */
 /*  CPU1                                             CPU2
  *   |             (SYSTEM)                            |
  *   |----HW_IPCC_SYSTEM_CMD_RSP_CHANNEL-------------->|
@@ -45,7 +40,6 @@ public:
 	
 	static bool expected(Direction direction, byte channel);
 	static bool pending(Direction direction, byte channel);
-	static bool eventReady(Direction direction, byte channel);
 	static void unExpect(Direction direction, byte channel);
 	static void expect(Direction direction, byte channel);
 	static void occupy(byte channel, bool expect = false);

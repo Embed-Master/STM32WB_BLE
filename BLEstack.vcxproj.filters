@@ -2,99 +2,81 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <Filter Include="Source files">
-      <UniqueIdentifier>{d4e4096a-04d8-4865-8351-0654d899e16b}</UniqueIdentifier>
+      <UniqueIdentifier>{e0d2dc96-210d-4ec0-864e-b69ec4cf0f2e}</UniqueIdentifier>
       <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
     <Filter Include="Header files">
-      <UniqueIdentifier>{7266ff40-275f-424a-a2df-dee5e8668de8}</UniqueIdentifier>
+      <UniqueIdentifier>{1c8e9651-5872-42b1-83df-451be027bd23}</UniqueIdentifier>
       <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
     </Filter>
     <Filter Include="Source files\Device-specific files">
-      <UniqueIdentifier>{d7062176-0433-40a6-9c0b-0e92b638c3cd}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="VisualGDB settings">
-      <UniqueIdentifier>{a7cbe745-7fcf-482b-984a-6ed1964497c3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source files\Project">
-      <UniqueIdentifier>{cb1a8189-ebc3-4f0d-9b22-a037717de9ac}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header files\Project">
-      <UniqueIdentifier>{e928d4d7-3dcb-4a92-942b-a34143a4b56c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source files\Project\BLE">
-      <UniqueIdentifier>{498a623a-f08e-4889-b2fd-2b0908fdcbaf}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source files\Project\BLE\TL">
-      <UniqueIdentifier>{d4d0b707-c6f0-4318-9bba-57184c2fc702}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header files\Project\BLE">
-      <UniqueIdentifier>{0b4bb9e9-b23e-4cb0-863f-b6c17f7cf9ee}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source files\Project\BLE\Utilities">
-      <UniqueIdentifier>{37328e59-e5f6-4374-8dca-d279ca3b3d06}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source files\Project\BLE\Thread">
-      <UniqueIdentifier>{c3e42603-6426-4168-af57-3c240cd169b8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source files\Project\BLE\Hardware">
-      <UniqueIdentifier>{6a5b7dc9-28f0-4049-b2c1-35b223935c09}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source files\Device-specific files\FreeRTOS">
-      <UniqueIdentifier>{8db2d4ac-693c-465d-b203-9add485e6f12}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source files\Device-specific files\HAL">
-      <UniqueIdentifier>{8508f7f7-9d23-4f3b-9156-0156d4aa8dcc}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source files\Device-specific files\LL">
-      <UniqueIdentifier>{f8c95502-a876-4bda-a69d-0281c5df8f74}</UniqueIdentifier>
+      <UniqueIdentifier>{603e1fa0-c056-4743-a741-41b041658265}</UniqueIdentifier>
     </Filter>
     <Filter Include="Header files\Device-specific files">
-      <UniqueIdentifier>{222020d6-7b03-4ecd-9200-f55273f4eeda}</UniqueIdentifier>
+      <UniqueIdentifier>{48a35a13-d324-4b87-8730-b58561e237b5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="VisualGDB settings">
+      <UniqueIdentifier>{8b725ab9-c05b-476d-bdba-c5a1927c06ef}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source files\Device-specific files\FreeRTOS">
+      <UniqueIdentifier>{243b10fc-7276-4c94-8cc2-7a18de09fc7a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source files\Device-specific files\HAL">
+      <UniqueIdentifier>{ce39aba4-4869-4680-9a46-2be917ba0261}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source files\Device-specific files\LL">
+      <UniqueIdentifier>{8d0231f0-957d-4cc6-835b-113a8837a67f}</UniqueIdentifier>
     </Filter>
     <Filter Include="Header files\Device-specific files\FreeRTOS">
-      <UniqueIdentifier>{679c164b-27b4-4d59-bebf-1cefe9dac2e0}</UniqueIdentifier>
+      <UniqueIdentifier>{d6ff18b8-fc11-49d5-be3a-ececd0457899}</UniqueIdentifier>
     </Filter>
     <Filter Include="Header files\Device-specific files\HAL">
-      <UniqueIdentifier>{83726bac-562a-40a5-a5f2-bf50226d4df8}</UniqueIdentifier>
+      <UniqueIdentifier>{cc8bb58c-e33d-432f-9d8e-c2cfb4130019}</UniqueIdentifier>
     </Filter>
     <Filter Include="Header files\Device-specific files\LL">
-      <UniqueIdentifier>{67091e4a-4ee2-4949-be2a-f3f943fcc97c}</UniqueIdentifier>
+      <UniqueIdentifier>{e299d668-806e-474d-a1c9-d25b6aa69467}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source files\Project">
+      <UniqueIdentifier>{61630b52-0515-4957-b788-e48826dc143e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source files\Project\BLE">
+      <UniqueIdentifier>{c72f3eb6-a08b-4be5-8c4d-c87b0cfcf755}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source files\Project\System">
-      <UniqueIdentifier>{2f1a688d-1785-410a-afc2-b2e51b718668}</UniqueIdentifier>
+      <UniqueIdentifier>{a66531f6-eacc-49a5-8fd3-8534356523c9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source files\Project\BLE\API">
+      <UniqueIdentifier>{4c0f3dbe-9da4-41f5-a8b2-45d169a0cebc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source files\Project\BLE\Hardware">
+      <UniqueIdentifier>{49137932-9157-42b4-9b24-8e09a9d7de0a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header files\Project">
+      <UniqueIdentifier>{ee36f992-fc52-4eeb-ab6d-51ae18e4cb23}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header files\Project\BLE">
+      <UniqueIdentifier>{3ea9f8f5-e09b-48f0-a0eb-66844bd2e4e2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header files\Project\BLE\API">
+      <UniqueIdentifier>{973cc8ed-1e00-470d-870b-dd877a816b60}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header files\Project\BLE\Hardware">
+      <UniqueIdentifier>{2760e08b-b72a-4b5c-841b-b3fdb5f4ce5c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(BSP_ROOT)\STM32WBxxxx\StartupFiles\startup_stm32wb55xx_cm4.c">
       <Filter>Source files\Device-specific files</Filter>
     </ClCompile>
-    <None Include="BLEcustom-Debug.vgdbsettings">
+    <None Include="BLEstack-Debug.vgdbsettings">
       <Filter>VisualGDB settings</Filter>
     </None>
-    <None Include="BLEcustom-Release.vgdbsettings">
+    <None Include="BLEstack-Release.vgdbsettings">
       <Filter>VisualGDB settings</Filter>
     </None>
     <None Include="stm32wb.xml">
       <Filter>VisualGDB settings</Filter>
     </None>
-    <ClCompile Include="..\..\..\..\Sources\Codes\Libraries\C_C++\Periphery\SerialPort.cpp">
-      <Filter>Source files\Project</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\Sources\Codes\Libraries\C_C++\Periphery\Serial.cpp">
-      <Filter>Source files\Project</Filter>
-    </ClCompile>
-    <ClCompile Include="Project\BLE\Hardware\HwSemaphore.cpp">
-      <Filter>Source files\Project\BLE\Hardware</Filter>
-    </ClCompile>
-    <ClCompile Include="Project\BLE\Hardware\IPCC.cpp">
-      <Filter>Source files\Project\BLE\Hardware</Filter>
-    </ClCompile>
-    <ClCompile Include="Project\main.cpp">
-      <Filter>Source files\Project</Filter>
-    </ClCompile>
-    <ClCompile Include="Project\SMPS.cpp">
-      <Filter>Source files\Project</Filter>
-    </ClCompile>
     <None Include="$(BSP_ROOT)\FreeRTOS\License\license.txt">
       <Filter>Source files\Device-specific files\FreeRTOS</Filter>
     </None>
@@ -125,7 +107,13 @@
     <ClCompile Include="$(BSP_ROOT)\FreeRTOS\Source\timers.c">
       <Filter>Source files\Device-specific files\FreeRTOS</Filter>
     </ClCompile>
+    <ClCompile Include="$(BSP_ROOT)\FreeRTOS\Source\CMSIS_RTOS\cmsis_os.c">
+      <Filter>Source files\Device-specific files\FreeRTOS</Filter>
+    </ClCompile>
     <ClCompile Include="$(BSP_ROOT)\FreeRTOS\Source\portable\GCC\ARM_CM4F\port.c">
+      <Filter>Source files\Device-specific files\FreeRTOS</Filter>
+    </ClCompile>
+    <ClCompile Include="$(BSP_ROOT)\FreeRTOS\Source\portable\MemMang\heap_4.c">
       <Filter>Source files\Device-specific files\FreeRTOS</Filter>
     </ClCompile>
     <ClCompile Include="$(BSP_ROOT)\STM32WBxxxx\STM32WBxx_HAL_Driver\Src\stm32wbxx_hal.c">
@@ -340,6 +328,9 @@
     </ClCompile>
     <ClInclude Include="stm32wbxx_hal_conf.h">
       <Filter>Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="$(BSP_ROOT)\FreeRTOS\Source\CMSIS_RTOS\cmsis_os.h">
+      <Filter>Header files\Device-specific files\FreeRTOS</Filter>
     </ClInclude>
     <ClInclude Include="$(BSP_ROOT)\FreeRTOS\Source\include\croutine.h">
       <Filter>Header files\Device-specific files\FreeRTOS</Filter>
@@ -713,35 +704,77 @@
     <ClInclude Include="$(BSP_ROOT)\STM32WBxxxx\STM32WBxx_HAL_Driver\Inc\stm32wbxx_ll_wwdg.h">
       <Filter>Header files\Device-specific files\LL</Filter>
     </ClInclude>
-    <ClCompile Include="$(BSP_ROOT)\FreeRTOS\Source\portable\MemMang\heap_4.c">
-      <Filter>Source files\Device-specific files\FreeRTOS</Filter>
-    </ClCompile>
     <ClCompile Include="system_stm32wbxx.c">
       <Filter>Source files\Project\System</Filter>
     </ClCompile>
-    <ClCompile Include="$(BSP_ROOT)\FreeRTOS\Source\CMSIS_RTOS\cmsis_os.c">
-      <Filter>Source files\Device-specific files\FreeRTOS</Filter>
+    <ClCompile Include="Project\main.cpp">
+      <Filter>Source files\Project</Filter>
     </ClCompile>
-    <ClInclude Include="$(BSP_ROOT)\FreeRTOS\Source\CMSIS_RTOS\cmsis_os.h">
-      <Filter>Header files\Device-specific files\FreeRTOS</Filter>
-    </ClInclude>
+    <ClCompile Include="Project\RTC.cpp">
+      <Filter>Source files\Project</Filter>
+    </ClCompile>
+    <ClCompile Include="Project\SMPS.cpp">
+      <Filter>Source files\Project</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Sources\Codes\Libraries\C_C++\Periphery\Serial.cpp">
+      <Filter>Source files\Project</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Sources\Codes\Libraries\C_C++\Periphery\SerialPort.cpp">
+      <Filter>Source files\Project</Filter>
+    </ClCompile>
     <ClCompile Include="Project\BLE\BLE.cpp">
       <Filter>Source files\Project\BLE</Filter>
     </ClCompile>
+    <ClCompile Include="Project\BLE\DIS.cpp">
+      <Filter>Source files\Project\BLE</Filter>
+    </ClCompile>
+    <ClCompile Include="Project\BLE\List.cpp">
+      <Filter>Source files\Project\BLE</Filter>
+    </ClCompile>
+    <ClCompile Include="Project\BLE\P2P.cpp">
+      <Filter>Source files\Project\BLE</Filter>
+    </ClCompile>
+    <ClCompile Include="Project\BLE\Service.cpp">
+      <Filter>Source files\Project\BLE</Filter>
+    </ClCompile>
     <ClCompile Include="Project\BLE\TL.cpp">
-      <Filter>Source files\Project\BLE\TL</Filter>
+      <Filter>Source files\Project\BLE</Filter>
+    </ClCompile>
+    <ClCompile Include="Project\BLE\API\GAP.cpp">
+      <Filter>Source files\Project\BLE\API</Filter>
+    </ClCompile>
+    <ClCompile Include="Project\BLE\API\GATT.cpp">
+      <Filter>Source files\Project\BLE\API</Filter>
+    </ClCompile>
+    <ClCompile Include="Project\BLE\API\HAL.cpp">
+      <Filter>Source files\Project\BLE\API</Filter>
+    </ClCompile>
+    <ClCompile Include="Project\BLE\API\HCI.cpp">
+      <Filter>Source files\Project\BLE\API</Filter>
+    </ClCompile>
+    <ClCompile Include="Project\BLE\API\L2CAP.cpp">
+      <Filter>Source files\Project\BLE\API</Filter>
+    </ClCompile>
+    <ClCompile Include="Project\BLE\API\LE.cpp">
+      <Filter>Source files\Project\BLE\API</Filter>
+    </ClCompile>
+    <ClCompile Include="Project\BLE\API\SHCI.cpp">
+      <Filter>Source files\Project\BLE\API</Filter>
     </ClCompile>
     <ClCompile Include="Project\BLE\Hardware\CPU2.cpp">
       <Filter>Source files\Project\BLE\Hardware</Filter>
     </ClCompile>
-    <ClCompile Include="Project\BLE\BLEList.cpp">
+    <ClCompile Include="Project\BLE\Hardware\HwSemaphore.cpp">
+      <Filter>Source files\Project\BLE\Hardware</Filter>
+    </ClCompile>
+    <ClCompile Include="Project\BLE\Hardware\IPCC.cpp">
+      <Filter>Source files\Project\BLE\Hardware</Filter>
+    </ClCompile>
+    <ClCompile Include="Project\BLE\BS.cpp">
       <Filter>Source files\Project\BLE</Filter>
     </ClCompile>
     <ClCompile Include="Project\Debug.cpp">
       <Filter>Source files\Project</Filter>
-    </ClCompile>
-    <ClCompile Include="Project\HRS.cpp">
-      <Filter>Source files\Project\BLE</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -750,32 +783,83 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="SMPS.h">
-      <Filter>Header files\Project</Filter>
-    </ClInclude>
-    <ClInclude Include="HwSemaphore.h">
-      <Filter>Header files\Project</Filter>
-    </ClInclude>
-    <ClInclude Include="IPCC.h">
-      <Filter>Header files\Project</Filter>
-    </ClInclude>
-    <ClInclude Include="app_conf.h">
-      <Filter>Header files\Project\BLE</Filter>
-    </ClInclude>
-    <ClInclude Include="FreeRTOSdebug.h">
-      <Filter>Header files\Project</Filter>
-    </ClInclude>
     <ClInclude Include="Project\FreeRTOSConfig.h">
-      <Filter>Header files</Filter>
+      <Filter>Header files\Project</Filter>
     </ClInclude>
-    <ClInclude Include="Project\BLE\config.h">
+    <ClInclude Include="Project\BLE\legacy.h">
       <Filter>Header files\Project\BLE</Filter>
     </ClInclude>
-    <ClInclude Include="Project\Settings.h">
+    <ClInclude Include="Project\BLE\utilities.h">
+      <Filter>Header files\Project\BLE</Filter>
+    </ClInclude>
+    <ClInclude Include="Project\BLE\uuid.h">
+      <Filter>Header files\Project\BLE</Filter>
+    </ClInclude>
+    <ClInclude Include="Project\BLE\Hardware\HwSemaphore.h">
+      <Filter>Header files\Project\BLE\Hardware</Filter>
+    </ClInclude>
+    <ClInclude Include="Project\RTC.hpp">
       <Filter>Header files\Project</Filter>
+    </ClInclude>
+    <ClInclude Include="Project\SMPS.hpp">
+      <Filter>Header files\Project</Filter>
+    </ClInclude>
+    <ClInclude Include="Project\BLE\TL.hpp">
+      <Filter>Header files\Project\BLE</Filter>
+    </ClInclude>
+    <ClInclude Include="Project\BLE\Service.hpp">
+      <Filter>Header files\Project\BLE</Filter>
+    </ClInclude>
+    <ClInclude Include="Project\BLE\P2P.hpp">
+      <Filter>Header files\Project\BLE</Filter>
+    </ClInclude>
+    <ClInclude Include="Project\BLE\List.hpp">
+      <Filter>Header files\Project\BLE</Filter>
+    </ClInclude>
+    <ClInclude Include="Project\BLE\DIS.hpp">
+      <Filter>Header files\Project\BLE</Filter>
+    </ClInclude>
+    <ClInclude Include="Project\BLE\BLE.hpp">
+      <Filter>Header files\Project\BLE</Filter>
+    </ClInclude>
+    <ClInclude Include="Project\BLE\Hardware\IPCC.hpp">
+      <Filter>Header files\Project\BLE\Hardware</Filter>
+    </ClInclude>
+    <ClInclude Include="Project\BLE\Hardware\CPU2.hpp">
+      <Filter>Header files\Project\BLE\Hardware</Filter>
+    </ClInclude>
+    <ClInclude Include="Project\BLE\API\SHCI.hpp">
+      <Filter>Header files\Project\BLE\API</Filter>
+    </ClInclude>
+    <ClInclude Include="Project\BLE\API\LE.hpp">
+      <Filter>Header files\Project\BLE\API</Filter>
+    </ClInclude>
+    <ClInclude Include="Project\BLE\API\L2CAP.hpp">
+      <Filter>Header files\Project\BLE\API</Filter>
+    </ClInclude>
+    <ClInclude Include="Project\BLE\API\HCI.hpp">
+      <Filter>Header files\Project\BLE\API</Filter>
+    </ClInclude>
+    <ClInclude Include="Project\BLE\API\HAL.hpp">
+      <Filter>Header files\Project\BLE\API</Filter>
+    </ClInclude>
+    <ClInclude Include="Project\BLE\API\GATT.hpp">
+      <Filter>Header files\Project\BLE\API</Filter>
+    </ClInclude>
+    <ClInclude Include="Project\BLE\API\GAP.hpp">
+      <Filter>Header files\Project\BLE\API</Filter>
+    </ClInclude>
+    <ClInclude Include="Project\BLE\BS.hpp">
+      <Filter>Header files\Project\BLE</Filter>
+    </ClInclude>
+    <ClInclude Include="Project\BLE\StackConfig.hpp">
+      <Filter>Header files\Project\BLE</Filter>
     </ClInclude>
     <ClInclude Include="Project\Debug.h">
-      <Filter>Header files</Filter>
+      <Filter>Header files\Project</Filter>
+    </ClInclude>
+    <ClInclude Include="Project\CoreSettings.h">
+      <Filter>Header files\Project</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

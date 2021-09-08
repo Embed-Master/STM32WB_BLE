@@ -1,6 +1,7 @@
-#include "CPU2.h"
+#include "CPU2.hpp"
 #include "utilities.h"
-#include "TL.h"
+#include "TL.hpp"
+#include <cstring>
 
 const CPU2::GpioConfig CPU2::gpioConfigList[CPU2::GPIO_CFG_NBR_OF_FEATURES] =
 {
@@ -52,31 +53,17 @@ void CPU2::enable()
 	PWR->CR4 |= PWR_CR4_C2BOOT;
 }
 
-void CPU2::setup()
+uint CPU2::fillSettings(byte **ptr)
 {
-	DebugInitCmdPacket debugCmdPacket =
+	*ptr = new byte[sizeof(DebugInitCmdParameter)];
+	*((DebugInitCmdParameter *)*ptr) = 
 	{
-		{ { 0, 0, 0 } },
-		{
-			(byte *)gpioConfigList,
-			(byte *)&tracesConfig,
-			(byte *)&generalConfig,
-			GPIO_CFG_NBR_OF_FEATURES,
-			NBR_OF_TRACES_CONFIG_PARAMETERS,
-			NBR_OF_GENERAL_CONFIG_PARAMETERS 
-		}
+		(byte *)gpioConfigList,
+		(byte *)&tracesConfig,
+		(byte *)&generalConfig,
+		GPIO_CFG_NBR_OF_FEATURES,
+		NBR_OF_TRACES_CONFIG_PARAMETERS,
+		NBR_OF_GENERAL_CONFIG_PARAMETERS
 	};
-
-//	DebugInitCmdPacket *pCmdPacket = &debugCmdPacket;
-//	byte local_buffer[TL_BLEEVT_CS_BUFFER_SIZE];
-//	TL_EvtPacket_t * p_rsp;
-//
-//	p_rsp = (TL_EvtPacket_t *)local_buffer;
-//
-//	shci_send( SHCI_OPCODE_C2_DEBUG_INIT,
-//		sizeof(SHCI_C2_DEBUG_init_Cmd_Param_t),
-//		(uint8_t*)&pCmdPacket->Param,
-//		p_rsp);
-//
-//	return (SHCI_CmdStatus_t)(((TL_CcEvt_t*)(p_rsp->evtserial.evt.payload))->payload[0]);
+	return sizeof(DebugInitCmdParameter);
 }

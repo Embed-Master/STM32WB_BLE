@@ -24,11 +24,11 @@ class CPU2
 		byte ble_dtb_cfg;
 		byte reserved[3];
 	} __attribute__((packed));
-	struct Header
-	{
-		uint MetaData[3];
-	} __attribute__((packed));
-	struct DebugInitCmdParam
+//	struct Header
+//	{
+//		uint MetaData[3];
+//	} __attribute__((packed));
+	struct DebugInitCmdParameter
 	{
 		byte *pGpioConfig;
 		byte *pTracesConfig;
@@ -37,11 +37,11 @@ class CPU2
 		byte TracesConfigSize;
 		byte GeneralConfigSize;
 	} __attribute__((packed));
-	struct DebugInitCmdPacket
-	{
-		Header header;
-		DebugInitCmdParam param;
-	} __attribute__((packed));
+//	struct DebugInitCmdPacket
+//	{
+//		Header header;
+//		DebugInitCmdParameter param;
+//	} __attribute__((packed));
 	
 	static const byte GPIO_NBR_OF_RF_SIGNALS = 9;
 	static const byte GPIO_CFG_NBR_OF_FEATURES = 34;
@@ -53,5 +53,5 @@ class CPU2
 	
 public:
 	static void enable();
-	static void setup();
+	static uint fillSettings(byte **ptr);
 };

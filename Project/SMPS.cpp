@@ -1,4 +1,4 @@
-#include "SMPS.h"
+#include "SMPS.hpp"
 #include "CoreSettings.h"
 #include "Types.h"
 

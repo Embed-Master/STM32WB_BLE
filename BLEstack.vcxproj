@@ -1,5 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <SysprogsCodeDBDirectoryBase>R:\VisualGDBprojects\$(SolutionName)_$(Platform)_$(ProjectName)\$(Configuration)\</SysprogsCodeDBDirectoryBase>
+  </PropertyGroup>
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|VisualGDB">
       <Configuration>Debug</Configuration>
@@ -12,17 +15,16 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
-    <ProjectGuid>{C38885F9-370A-4EC5-A8CE-B99E49C883DD}</ProjectGuid>
+    <ProjectGuid>{F684C09F-0FB1-448F-A642-7FE6B274FD4B}</ProjectGuid>
     <BSP_ID>com.sysprogs.arm.stm32wb</BSP_ID>
     <BSP_VERSION>2020.05</BSP_VERSION>
     <InPlaceBSPSubdir />
+    <RelativeBSPPath />
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='Debug|VisualGDB'">
-    <MCUPropertyListFile>$(ProjectDir)stm32wb.props</MCUPropertyListFile>
   </PropertyGroup>
   <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='Release|VisualGDB'">
-    <MCUPropertyListFile>$(ProjectDir)stm32wb.props</MCUPropertyListFile>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -33,28 +35,28 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|VisualGDB'">
     <GNUConfigurationType>Debug</GNUConfigurationType>
     <ToolchainID>com.visualgdb.arm-eabi</ToolchainID>
-    <ToolchainVersion>9.3.1/9.2.0/r2</ToolchainVersion>
+    <ToolchainVersion>10.3.1/10.2.90/r1</ToolchainVersion>
+    <MCUPropertyListFile>$(ProjectDir)stm32wb.props</MCUPropertyListFile>
     <OutDir>R:\VisualGDBprojects\$(SolutionName)_$(Platform)_$(ProjectName)\$(Configuration)\</OutDir>
     <IntDir>R:\VisualGDBprojects\$(SolutionName)_$(Platform)_$(ProjectName)\$(Configuration)\IntDirectory\</IntDir>
+    <UserVariablePropertyListFile>$(ProjectDir)$(ProjectName)-user.props</UserVariablePropertyListFile>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|VisualGDB'">
     <ToolchainID>com.visualgdb.arm-eabi</ToolchainID>
-    <ToolchainVersion>9.3.1/9.2.0/r2</ToolchainVersion>
+    <ToolchainVersion>10.3.1/10.2.90/r1</ToolchainVersion>
+    <MCUPropertyListFile>$(ProjectDir)stm32wb.props</MCUPropertyListFile>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|VisualGDB'">
     <ClCompile>
       <CPPLanguageStandard>GNUPP1Z</CPPLanguageStandard>
-      <AdditionalIncludeDirectories>C:\Users\Rebel\AppData\Local\VisualGDB\EmbeddedBSPs\arm-eabi\com.sysprogs.arm.stm32wb\STM32WBxxxx\CMSIS_HAL\Device\ST\STM32WBxx\Include;C:\Users\Rebel\AppData\Local\VisualGDB\EmbeddedBSPs\arm-eabi\com.sysprogs.arm.stm32wb\STM32WBxxxx\CMSIS_HAL\Core\Include;../CommonLibs;../../../../Sources/Codes/Libraries/C_C++/IO;../../../../Sources/Codes/Libraries/C_C++/Common;../../../../Sources/Codes/Libraries/C_C++/Periphery/;../../../../Sources/Codes/Libraries/C_C++/Periphery/WB55;Project/BLE;Project/BLE/Hardware;C:\Users\Rebel\AppData\Local\VisualGDB\EmbeddedBSPs\arm-eabi\com.sysprogs.arm.stm32wb\STM32WBxxxx\STM32_WPAN\interface\patterns\ble_thread\tl;Project;%(ClCompile.AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>DEBUG=1;STM32WB55xx;SERIAL_PORT_COUNT=1;%(ClCompile.PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalOptions />
-      <CLanguageStandard />
+      <PreprocessorDefinitions>DEBUG=1;STM32WB55xx;SERIAL_PORT_COUNT=1;STACK_DEBUG;%(ClCompile.PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>C:\Users\Rebel\AppData\Local\VisualGDB\EmbeddedBSPs\arm-eabi\com.sysprogs.arm.stm32wb\STM32WBxxxx\CMSIS_HAL\Device\ST\STM32WBxx\Include;C:\Users\Rebel\AppData\Local\VisualGDB\EmbeddedBSPs\arm-eabi\com.sysprogs.arm.stm32wb\STM32WBxxxx\CMSIS_HAL\Core\Include;../../../../Sources/Codes/Libraries/C_C++/IO;../../../../Sources/Codes/Libraries/C_C++/Common;../../../../Sources/Codes/Libraries/C_C++/Periphery/;../../../../Sources/Codes/Libraries/C_C++/Periphery/WB55;Project/BLE;Project/BLE/Hardware;Project;Project/BLE/API;%(ClCompile.AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <AdditionalLinkerInputs>;%(Link.AdditionalLinkerInputs)</AdditionalLinkerInputs>
       <LibrarySearchDirectories>;%(Link.LibrarySearchDirectories)</LibrarySearchDirectories>
       <AdditionalLibraryNames>;%(Link.AdditionalLibraryNames)</AdditionalLibraryNames>
       <LinkerScript />
-      <AdditionalOptions />
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|VisualGDB'">
@@ -63,18 +65,40 @@
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\..\..\Sources\Codes\Libraries\C_C++\Periphery\Serial.cpp" />
+    <ClCompile Include="..\..\..\..\Sources\Codes\Libraries\C_C++\Periphery\SerialPort.cpp" />
+    <ClCompile Include="Project\BLE\API\GAP.cpp" />
+    <ClCompile Include="Project\BLE\API\GATT.cpp" />
+    <ClCompile Include="Project\BLE\API\HAL.cpp" />
+    <ClCompile Include="Project\BLE\API\HCI.cpp" />
+    <ClCompile Include="Project\BLE\API\L2CAP.cpp" />
+    <ClCompile Include="Project\BLE\API\LE.cpp" />
+    <ClCompile Include="Project\BLE\API\SHCI.cpp" />
     <ClCompile Include="Project\BLE\BLE.cpp" />
-    <ClCompile Include="Project\BLE\BLEList.cpp" />
+    <ClCompile Include="Project\BLE\BS.cpp" />
+    <ClCompile Include="Project\BLE\DIS.cpp" />
     <ClCompile Include="Project\BLE\Hardware\CPU2.cpp" />
+    <ClCompile Include="Project\BLE\Hardware\HwSemaphore.cpp" />
+    <ClCompile Include="Project\BLE\Hardware\IPCC.cpp" />
+    <ClCompile Include="Project\BLE\List.cpp" />
+    <ClCompile Include="Project\BLE\P2P.cpp" />
+    <ClCompile Include="Project\BLE\Service.cpp" />
     <ClCompile Include="Project\BLE\TL.cpp" />
+    <ClCompile Include="Project\Debug.cpp" />
+    <ClCompile Include="Project\main.cpp" />
+    <ClCompile Include="Project\RTC.cpp" />
+    <ClCompile Include="Project\SMPS.cpp" />
     <ClCompile Include="system_stm32wbxx.c" />
-    <ClInclude Include="app_conf.h" />
-    <ClInclude Include="FreeRTOSdebug.h" />
-    <ClInclude Include="HwSemaphore.h" />
-    <ClInclude Include="IPCC.h" />
-    <ClInclude Include="Project\BLE\config.h" />
-    <ClInclude Include="Project\FreeRTOSConfig.h" />
-    <ClInclude Include="SMPS.h" />
+    <None Include="stm32wb.props" />
+    <ClCompile Include="$(BSP_ROOT)\STM32WBxxxx\StartupFiles\startup_stm32wb55xx_cm4.c" />
+    <None Include="BLEstack-Debug.vgdbsettings" />
+    <None Include="BLEstack-Release.vgdbsettings" />
+    <None Include="stm32wb.xml" />
     <None Include="$(BSP_ROOT)\FreeRTOS\License\license.txt" />
     <ClCompile Include="$(BSP_ROOT)\FreeRTOS\Source\croutine.c" />
     <ClCompile Include="$(BSP_ROOT)\FreeRTOS\Source\event_groups.c" />
@@ -85,7 +109,9 @@
     <None Include="$(BSP_ROOT)\FreeRTOS\Source\st_readme.txt" />
     <ClCompile Include="$(BSP_ROOT)\FreeRTOS\Source\tasks.c" />
     <ClCompile Include="$(BSP_ROOT)\FreeRTOS\Source\timers.c" />
+    <ClCompile Include="$(BSP_ROOT)\FreeRTOS\Source\CMSIS_RTOS\cmsis_os.c" />
     <ClCompile Include="$(BSP_ROOT)\FreeRTOS\Source\portable\GCC\ARM_CM4F\port.c" />
+    <ClCompile Include="$(BSP_ROOT)\FreeRTOS\Source\portable\MemMang\heap_4.c" />
     <ClCompile Include="$(BSP_ROOT)\STM32WBxxxx\STM32WBxx_HAL_Driver\Src\stm32wbxx_hal.c" />
     <ClCompile Include="$(BSP_ROOT)\STM32WBxxxx\STM32WBxx_HAL_Driver\Src\stm32wbxx_hal_adc.c" />
     <ClCompile Include="$(BSP_ROOT)\STM32WBxxxx\STM32WBxx_HAL_Driver\Src\stm32wbxx_hal_adc_ex.c" />
@@ -156,7 +182,34 @@
     <ClCompile Include="$(BSP_ROOT)\STM32WBxxxx\STM32WBxx_HAL_Driver\Src\stm32wbxx_ll_tim.c" />
     <ClCompile Include="$(BSP_ROOT)\STM32WBxxxx\STM32WBxx_HAL_Driver\Src\stm32wbxx_ll_usart.c" />
     <ClCompile Include="$(BSP_ROOT)\STM32WBxxxx\STM32WBxx_HAL_Driver\Src\stm32wbxx_ll_utils.c" />
+    <ClInclude Include="Project\BLE\API\GAP.hpp" />
+    <ClInclude Include="Project\BLE\API\GATT.hpp" />
+    <ClInclude Include="Project\BLE\API\HAL.hpp" />
+    <ClInclude Include="Project\BLE\API\HCI.hpp" />
+    <ClInclude Include="Project\BLE\API\L2CAP.hpp" />
+    <ClInclude Include="Project\BLE\API\LE.hpp" />
+    <ClInclude Include="Project\BLE\API\SHCI.hpp" />
+    <ClInclude Include="Project\BLE\BLE.hpp" />
+    <ClInclude Include="Project\BLE\BS.hpp" />
+    <ClInclude Include="Project\BLE\StackConfig.hpp" />
+    <ClInclude Include="Project\BLE\DIS.hpp" />
+    <ClInclude Include="Project\BLE\Hardware\CPU2.hpp" />
+    <ClInclude Include="Project\BLE\Hardware\HwSemaphore.h" />
+    <ClInclude Include="Project\BLE\Hardware\IPCC.hpp" />
+    <ClInclude Include="Project\BLE\legacy.h" />
+    <ClInclude Include="Project\BLE\List.hpp" />
+    <ClInclude Include="Project\BLE\P2P.hpp" />
+    <ClInclude Include="Project\BLE\Service.hpp" />
+    <ClInclude Include="Project\BLE\TL.hpp" />
+    <ClInclude Include="Project\BLE\utilities.h" />
+    <ClInclude Include="Project\BLE\uuid.h" />
+    <ClInclude Include="Project\CoreSettings.h" />
+    <ClInclude Include="Project\Debug.h" />
+    <ClInclude Include="Project\FreeRTOSConfig.h" />
+    <ClInclude Include="Project\RTC.hpp" />
+    <ClInclude Include="Project\SMPS.hpp" />
     <ClInclude Include="stm32wbxx_hal_conf.h" />
+    <ClInclude Include="$(BSP_ROOT)\FreeRTOS\Source\CMSIS_RTOS\cmsis_os.h" />
     <ClInclude Include="$(BSP_ROOT)\FreeRTOS\Source\include\croutine.h" />
     <ClInclude Include="$(BSP_ROOT)\FreeRTOS\Source\include\deprecated_definitions.h" />
     <ClInclude Include="$(BSP_ROOT)\FreeRTOS\Source\include\event_groups.h" />
@@ -281,24 +334,5 @@
     <ClInclude Include="$(BSP_ROOT)\STM32WBxxxx\STM32WBxx_HAL_Driver\Inc\stm32wbxx_ll_usart.h" />
     <ClInclude Include="$(BSP_ROOT)\STM32WBxxxx\STM32WBxx_HAL_Driver\Inc\stm32wbxx_ll_utils.h" />
     <ClInclude Include="$(BSP_ROOT)\STM32WBxxxx\STM32WBxx_HAL_Driver\Inc\stm32wbxx_ll_wwdg.h" />
-    <ClCompile Include="$(BSP_ROOT)\FreeRTOS\Source\portable\MemMang\heap_4.c" />
-    <ClCompile Include="$(BSP_ROOT)\FreeRTOS\Source\CMSIS_RTOS\cmsis_os.c" />
-    <ClInclude Include="$(BSP_ROOT)\FreeRTOS\Source\CMSIS_RTOS\cmsis_os.h" />
-  </ItemGroup>
-  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
-  <ImportGroup Label="ExtensionTargets">
-  </ImportGroup>
-  <ItemGroup>
-    <ClCompile Include="..\..\..\..\Sources\Codes\Libraries\C_C++\Periphery\Serial.cpp" />
-    <ClCompile Include="..\..\..\..\Sources\Codes\Libraries\C_C++\Periphery\SerialPort.cpp" />
-    <ClCompile Include="Project\BLE\Hardware\HwSemaphore.cpp" />
-    <ClCompile Include="Project\BLE\Hardware\IPCC.cpp" />
-    <ClCompile Include="Project\main.cpp" />
-    <ClCompile Include="Project\SMPS.cpp" />
-    <None Include="stm32wb.props" />
-    <ClCompile Include="$(BSP_ROOT)\STM32WBxxxx\StartupFiles\startup_stm32wb55xx_cm4.c" />
-    <None Include="BLEcustom-Debug.vgdbsettings" />
-    <None Include="BLEcustom-Release.vgdbsettings" />
-    <None Include="stm32wb.xml" />
   </ItemGroup>
 </Project>

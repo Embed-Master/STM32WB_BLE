@@ -1,62 +1,43 @@
-#include "IPCC.h"
+#include "IPCC.hpp"
 #include "CoreSettings.h"
 
 void (*IPCCm::callback[12])();
 
 bool IPCCm::expected(Direction direction, byte channel)
 {
+	if (channel > 5) return false;
 	return (~IPCC->C1MR >> 16 * (byte)direction) & (1 << channel);
 }
 
 bool IPCCm::pending(Direction direction, byte channel)
 {
-	return (direction == Direction::Rx ? IPCC->C2TOC1SR : IPCC->C1TOC2SR) & (1 << channel);
-}
-
-bool IPCCm::eventReady(Direction direction, byte channel)
-{
-	return pending(direction, channel) && expected(direction, channel);
+	if (channel > 5) return false;
+ 	return (direction == Direction::Rx ? IPCC->C2TOC1SR : IPCC->C1TOC2SR) & (1 << channel);
 }
 
 void IPCCm::interrupt(Direction direction)
 {
-	if (direction == IPCCm::Direction::Rx)
+	if (direction == Direction::Rx)
 	{
 		for (byte i = 0; i < 6; i++)
 		{
-			if (eventReady(IPCCm::Direction::Rx, i))
+			if (pending(Direction::Rx, i) && expected(Direction::Rx, i))
 			{
 				if (callback[i]) callback[i]();
 				IPCC->C1SCR = 1 << i;
 			}
 		}
-//		else if (eventPanding(Direction::Rx, Channel::BLE))
-//		{
-//			//		HW_IPCC_BLE_EvtHandler();
-//		}
 	}
-	else// Tx
+	else
 	{
 		for (byte i = 0; i < 6; i++)
 		{
-			if (eventReady(IPCCm::Direction::Tx, i))
+			if (!pending(Direction::Tx, i) && expected(Direction::Tx, i))
 			{
 				IPCC->C1MR |= 1 << (i + 16);
 				if (callback[i + 6]) callback[i + 6]();
 			}
 		}
-//		if (HW_IPCC_TX_PENDING( HW_IPCC_SYSTEM_CMD_RSP_CHANNEL ))
-//		{
-//			HW_IPCC_SYS_CmdEvtHandler();
-//		}
-//		else if (HW_IPCC_TX_PENDING( HW_IPCC_MM_RELEASE_BUFFER_CHANNEL ))
-//		{
-//			HW_IPCC_MM_FreeBufHandler();
-//		}
-//		else if (HW_IPCC_TX_PENDING( HW_IPCC_HCI_ACL_DATA_CHANNEL ))
-//		{
-//			HW_IPCC_BLE_AclDataEvtHandler();
-//		}
 	}
 }
 
