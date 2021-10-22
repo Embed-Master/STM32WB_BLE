@@ -4,7 +4,7 @@
 #include "string.h"
 #include "IPCC.hpp"
 #ifdef STACK_DEBUG
-#include "Debug.h"
+#include "Debug.hpp"
 #endif // STACK_DEBUG
 
 PLACE_IN_SECTION("MB_MEM2") ALIGN(4) TL::CmdPacket SHCI::packet;
@@ -120,7 +120,7 @@ void SHCI::send(Opcode opcode, byte length, byte * payload, TL::EvtPacket * evt)
 
 void SHCI::init(void (*callback)(TaskHandle_t))
 {
-	xTaskCreate(eventHandler, "SHCI::eventHandler", configMINIMAL_STACK_SIZE * 2, nullptr, FREERTOS_PRIORITY_BLE, &eventHandlerHandle);
+	xTaskCreate(eventHandler, "SHCI::eventHandler", configMINIMAL_STACK_SIZE * 4, nullptr, BLE_FREERTOS_THREAD_PRIORITY, &eventHandlerHandle);
 	vTaskSuspend(eventHandlerHandle);
 	SHCI::callback = callback;
 	List::initHead(&evtQueue);

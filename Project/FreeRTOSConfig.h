@@ -56,7 +56,7 @@
 #define configUSE_PREEMPTION              1
 #define configUSE_IDLE_HOOK               0
 #define configUSE_TICK_HOOK               0
-#define configMAX_PRIORITIES              (2)
+#define configMAX_PRIORITIES              (3)
 #define configSUPPORT_STATIC_ALLOCATION   0
 #define configCPU_CLOCK_HZ                (SystemCoreClock)
 #define configTICK_RATE_HZ                ((TickType_t)1000)
@@ -95,6 +95,7 @@ to exclude the API function. */
 #define INCLUDE_vTaskDelayUntil        0
 #define INCLUDE_vTaskDelay             0
 #define INCLUDE_xTaskGetSchedulerState 0
+#define INCLUDE_xTaskGetCurrentTaskHandle 1
 
 /*------------- CMSIS-RTOS V2 specific defines -----------*/
 /* When using CMSIS-RTOSv2 set configSUPPORT_STATIC_ALLOCATION to 1

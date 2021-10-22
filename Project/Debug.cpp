@@ -1,4 +1,4 @@
-#include "Debug.h"
+#include "Debug.hpp"
 #include "GPIOLib.h"
 #include "stdio.h"
 

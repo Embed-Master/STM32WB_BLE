@@ -3,9 +3,39 @@
 /******************************************************************************
  * Stack settings
  ******************************************************************************/
-// Max number - max priority
-#define FREERTOS_PRIORITY_BLE	2
-#define STACK_VERSION			0.8
+#define STACK_VERSION						0.8
+#define BLE_FREERTOS_THREAD_PRIORITY		4// BLE OS thread priority; Higher number - higher priority
+#define BLE_ISR_PRIORITY_GROUPING			5
+#define BLE_FREERTOS_ISR_PRIORITY_GROUP		1// BLE ISR priority; Lower number - higher priority
+#define BLE_FREERTOS_ISR_PRIORITY_SUBGROUP	0// BLE ISR priority; Lower number - higher priority
+#define BLE_APP_NOTIFICATION_CALLBACK_CNT	8
+
+/******************************************************************************
+ * Services
+ ******************************************************************************/
+#define BLE_CFG_SVCCTL_MAX						1
+#define BLE_CFG_CLT_MAX							0
+
+/**
+ * Define Advertising parameters
+ */
+#define CFG_LP_CONN_ADV_INTERVAL_MIN      (0x640) /**< 1s */
+#define CFG_LP_CONN_ADV_INTERVAL_MAX      (0xfa0) /**< 2.5s */
+
+/**
+ * P2P Service
+ */
+#define P2P_MAX_SERVICE_CNT 8
+
+// Characteristic UUID's scheme
+/*
+	4-2-2-2-6
+	Char-Mtrk-0000-Rodion
+	CharMtrkRodion - 436861724D74726B526F64696F6E
+	43686172-4D74-726B-0000-526F64696F6E - Characteristic
+	0x43, 0x68, 0x61, 0x72, 0x4D, 0x74, 0x72, 0x6B, 0x00, 0x00, 0x52, 0x6F, 0x64, 0x69, 0x6F, 0x6E - Characteristic
+ */
+#define BLE_P2P_CHARACTERISTIC_BASE_UUID	0x6E, 0x6F, 0x69, 0x64, 0x6F, 0x52, 0x00, 0x00, 0x6B, 0x72, 0x74, 0x4D, 0x72, 0x61, 0x68, 0x43
 
 /******************************************************************************
  * Transport Layer
@@ -251,27 +281,3 @@
 #define STATIC_RANDOM_ADDR                     1
 #define RESOLVABLE_PRIVATE_ADDR                2
 #define NON_RESOLVABLE_PRIVATE_ADDR            3
-
-/******************************************************************************
- * Services
- ******************************************************************************/
-#define BLE_CFG_SVCCTL_MAX						1
-#define BLE_CFG_CLT_MAX							0
-
-/* Type of service (primary or secondary
- */
-#define PRIMARY_SERVICE							0x01
-#define SECONDARY_SERVICE						0x02
-
-/**
- * Define Advertising parameters
- */
-#define CFG_FAST_CONN_ADV_INTERVAL_MIN    (0x80)   /**< 80ms */
-#define CFG_FAST_CONN_ADV_INTERVAL_MAX    (0xa0)  /**< 100ms */
-#define CFG_LP_CONN_ADV_INTERVAL_MIN      (0x640) /**< 1s */
-#define CFG_LP_CONN_ADV_INTERVAL_MAX      (0xfa0) /**< 2.5s */
-
-/**
- * P2P Service
- */
-#define P2P_PARAMETER_CNT 15

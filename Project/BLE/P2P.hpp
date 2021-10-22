@@ -7,51 +7,47 @@
 
 class P2P
 {
+	friend class BLE;
+	friend class Service;
 public:
-	enum class Notification : byte
+	enum class Request : byte
 	{
 		NotificationEnabled,
 		NotificationDisabled,
 		Read,
 		Write
 	};
-	
-private:
-	struct Context
+	struct CharConfig
 	{
-		ushort service;
-		ushort characteristic[P2P_PARAMETER_CNT];
-	};
-	struct Callback
-	{
-		void (*ptr)(byte id, Notification notification, uint length, byte *data);
-		GATT::UUID uuid;
-		byte length;
+		void (*callback)(byte, Request, uint, byte *);
+		ushort length;
 		byte properties;
 		byte permissions;
 		byte events;
 		bool variable;
 	};
 	
-	static Context context;
+private:
+	struct Context
+	{
+		GATT::UUID uuid;
+		ushort service;
+		ushort *characteristic;
+		byte charCnt;
+	};
+	
+	static P2P *service[P2P_MAX_SERVICE_CNT];
+	static byte serviceCnt;
 	static ushort connection;
-	static Callback callback[P2P_PARAMETER_CNT];
-	static byte callbackCnt;
-	static GATT::UUID serviceUUID;
-	static GATT::UUID charUUID;
+	Context context;
+	CharConfig *config;
+	
+	static inline void connectionSet(ushort con) { connection = con; }  // kostil
+	static Service::EvtStatus event(TL::Event * evt);
+	static void init();
 	
 public:
-	static void connectionSet(ushort con); // kostil
-	static inline void initUUID(GATT::UUID &uuidS, GATT::UUID &uuidC) { serviceUUID = uuidS; charUUID = uuidC;}// That method should be called before BLE initialization
-	static GATT::UUID prepareUUID(byte shift);
-	/*
-	 *	addCharacteristic() - register characteristics for P2P service and callback for them
-	 *	This method should be called before BLE initialization
-	 *	All characteristics must be registered before BLE initialization
-	 *	*/
-	static bool addCharacteristic(GATT::UUID uuid, byte length, byte properties, byte permissions, byte events, bool variable, void (ptr)(byte, Notification, uint, byte *));
-	static Service::EvtStatus event(TL::Event * evt);
-	static bool updateValue(byte id, uint length, byte *data);
+	bool updateValue(byte id, ushort length, byte *data);
 	static void allowRead();
-	static void init();
+	P2P(GATT::UUID uuid, CharConfig conf[]);
 };

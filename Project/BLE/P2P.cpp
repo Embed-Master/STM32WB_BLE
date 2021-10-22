@@ -4,24 +4,9 @@
 #include "string.h"
 #include "legacy.h"
 
-P2P::Context P2P::context;
+P2P *P2P::service[P2P_MAX_SERVICE_CNT];
+byte P2P::serviceCnt;
 ushort P2P::connection;
-P2P::Callback P2P::callback[P2P_PARAMETER_CNT];
-byte P2P::callbackCnt;
-GATT::UUID P2P::serviceUUID;
-GATT::UUID P2P::charUUID;
-
-void P2P::connectionSet(ushort con)
-{
-	connection = con;
-}
-
-GATT::UUID P2P::prepareUUID(byte shift)
-{
-	GATT::UUID uuid = charUUID;
-	uuid.id._128bit[6] += shift;
-	return uuid;
-}
 
 Service::EvtStatus P2P::event(TL::Event * evt)
 {
@@ -29,59 +14,49 @@ Service::EvtStatus P2P::event(TL::Event * evt)
 	GATT::AttributeModifiedEvent::Response *rsp = (GATT::AttributeModifiedEvent::Response *)bleEvt->payload;
 	if (bleEvt->code == EVT_BLUE_GATT_ATTRIBUTE_MODIFIED)
 	{
-		for (byte i = 0; i < callbackCnt; i++)
+		for (byte s = 0; s < serviceCnt; s++)
 		{
-			if (rsp->handle == context.characteristic[i] + 1 && (callback[i].properties & CHAR_PROP_WRITE))
+			for (byte c = 0; c < service[s]->context.charCnt; c++)
 			{
-				callback[i].ptr(i, Notification::Write, rsp->length, rsp->data);
+				if (rsp->handle == service[s]->context.characteristic[c] + 1 && (service[s]->config[c].properties & CHAR_PROP_WRITE))
+				{
+					service[s]->config[c].callback(c, Request::Write, rsp->length, rsp->data);
 #ifdef STACK_DEBUG
-				printf("P2P Write Parameter %d received, len = %d\n", i, rsp->length);
+					printf("P2P Service %d Write Parameter %d received, len = %d\n", s, c, rsp->length);
 #endif // STACK_DEBUG
-				return Service::EvtStatus::Ack;
-			}
-			else if (rsp->handle == context.characteristic[i] + 2 && (callback[i].properties & CHAR_PROP_NOTIFY))
-			{
-				callback[i].ptr(i, rsp->data[0] & (byte)Service::CharMode::Notification ? Notification::NotificationEnabled : Notification::NotificationDisabled, 0, nullptr);
+					return Service::EvtStatus::Ack;
+				}
+				else if (rsp->handle == service[s]->context.characteristic[c] + 2 && (service[s]->config[c].properties & CHAR_PROP_NOTIFY))
+				{
+					service[s]->config[c].callback(c, rsp->data[0] & (byte)Service::CharMode::Notification ? Request::NotificationEnabled : Request::NotificationDisabled, 0, nullptr);
 #ifdef STACK_DEBUG
-				printf("P2P Notification Parameter %d ", i);
-				if (rsp->data[0] & (byte)Service::CharMode::Notification) printf("Enabled\n");
-				else printf("Disabled\n");
+					printf("P2P Service %d Notification Parameter %d ", s, c);
+					if (rsp->data[0] & (byte)Service::CharMode::Notification) printf("Enabled\n");
+					else printf("Disabled\n");
 #endif // STACK_DEBUG
-				return Service::EvtStatus::Ack;				
-			}
+					return Service::EvtStatus::Ack;
+				}
+			}	
 		}
 	}
 	else if (bleEvt->code == EVT_BLUE_GATT_READ_PERMIT_REQ)
 	{
-		for (byte i = 0; i < callbackCnt; i++)
+		for (byte s = 0; s < serviceCnt; s++)
 		{
-			if (rsp->handle == context.characteristic[i] + 1 && (callback[i].properties & CHAR_PROP_READ) == CHAR_PROP_READ)
+			for (byte c = 0; c < service[s]->context.charCnt; c++)
 			{
-				callback[i].ptr(i, Notification::Read, 0, nullptr);
+				if (rsp->handle == service[s]->context.characteristic[c] + 1 && (service[s]->config[c].properties & CHAR_PROP_READ))
+				{
+					service[s]->config[c].callback(c, Request::Read, 0, nullptr);
 #ifdef STACK_DEBUG
-				printf("P2P Read Parameter %d received\n", i);
+					printf("P2P Service %d Read Parameter %d received\n", s, c);
 #endif // STACK_DEBUG
-				return Service::EvtStatus::Ack;
-			}
+					return Service::EvtStatus::Ack;
+				}
+			}	
 		}
 	}
 	return Service::EvtStatus::NotAck;
-}
-
-bool P2P::addCharacteristic(GATT::UUID uuid, byte length, byte properties, byte permissions, byte events, bool variable, void (ptr)(byte, Notification, uint, byte *))
-{
-	if (callbackCnt < P2P_PARAMETER_CNT && ptr)
-	{
-		callback[callbackCnt].uuid = uuid;
-		callback[callbackCnt].length = length;
-		callback[callbackCnt].properties = properties;
-		callback[callbackCnt].permissions = permissions;
-		callback[callbackCnt].events = events;
-		callback[callbackCnt].variable = variable;
-		callback[callbackCnt++].ptr = ptr;
-		return true;
-	}
-	return false;
 }
 
 void P2P::allowRead()
@@ -89,35 +64,75 @@ void P2P::allowRead()
 	GATT::allowRead(connection);
 }
 
-bool P2P::updateValue(byte id, uint length, byte *data)
+bool P2P::updateValue(byte id, ushort length, byte *data)
 {
-	if (id > callbackCnt || id < 0 || length > callback[id].length) return false;
-	GATT::updateCharValue(context.service, context.characteristic[id], 0, length, data);
+	if (id > context.charCnt || length > config[id].length) return false;
+	ushort remain = length;
+	while (remain)
+	{
+		byte size = remain >= 255 ? 255 : remain;
+		GATT::updateCharValue(context.service, context.characteristic[id], length - remain, size, data + length - remain);
+		remain -= size;
+	}
 	return true;
 }
 
 void P2P::init()
 {
-	if (!callbackCnt) return;
+	if (!serviceCnt) return;
 	HCI::Status result;
 	Service::regServer(event);
-	byte length = 0;
-	for (byte i = 0; i < callbackCnt; i++) length += callback[i].properties & CHAR_PROP_NOTIFY ? 3 : 2;
-#ifndef STACK_DEBUG
-	result = GATT::addService(uuid, GATT::ServiceType::Primary, length + 1, context.service);
-#else
-	if ((result = GATT::addService(serviceUUID, GATT::ServiceType::Primary, length + 1, context.service)) == HCI::Status::Success)	printf("P2P Service is added Successfully; Handle: 0x%04X\n", context.service);
-	else printf("FAILED to add P2P Service; Status: 0x%02X\n", (byte)result);
-#endif // !STACK_DEBUG
-	if (result == HCI::Status::Success)	for (byte i = 0; i < callbackCnt; i++)
+	for (byte s = 0; s < serviceCnt; s++)
 	{
+		byte length = 0;
+		GATT::UUID uuid = { GATT::UUIDtype::_128bit, { ._128bit = { BLE_P2P_CHARACTERISTIC_BASE_UUID } } };
+		uuid.id._128bit[7] = service[s]->context.uuid.id._128bit[6];
+		for (byte c = 0; c < service[s]->context.charCnt; c++) length += service[s]->config[c].properties & CHAR_PROP_NOTIFY ? 3 : 2;	
 #ifndef STACK_DEBUG
-		GATT::addCharacteristic(context.service, callback[i].uuid, 10, context.characteristic[i], callback[i].properties, callback[i].permissions, callback[i].events, 10, true);
+		result = GATT::addService(service[s]->context.uuid, GATT::ServiceType::Primary, length + 1, service[s]->context.service);
 #else
-		if ((result = GATT::addCharacteristic(	context.service, callback[i].uuid, callback[i].length, context.characteristic[i],
-												callback[i].properties, callback[i].permissions, callback[i].events, 10, true)) == HCI::Status::Success)
-			printf("Parameter %d Added Successfully; Handle: 0x%04X\n", i, context.characteristic[i]);
-		else printf("FAILED to add Parameter %d; Status: 0x%02X\n", i, (byte)result);
+		if ((result = GATT::addService(service[s]->context.uuid, GATT::ServiceType::Primary, length + 1, service[s]->context.service)) == HCI::Status::Success)	printf("P2P Service is added Successfully; Handle: 0x%04X\n", service[s]->context.service);
+		else printf("FAILED to add P2P Service; Status: 0x%02X\n", (byte)result);
 #endif // !STACK_DEBUG
+		if (result == HCI::Status::Success)
+		{
+			for (byte c = 0; c < service[s]->context.charCnt; c++)
+			{
+#ifndef STACK_DEBUG
+				GATT::addCharacteristic(service[s]->context.service, uuid, service[s]->config[c].length, service[s]->context.characteristic[c], service[s]->config[c].properties, service[s]->config[c].permissions, service[s]->config[c].events, 10, service[s]->config[c].variable);
+#else
+				if ((result = GATT::addCharacteristic(service[s]->context.service, uuid, service[s]->config[c].length, service[s]->context.characteristic[c], service[s]->config[c].properties, service[s]->config[c].permissions, service[s]->config[c].events, 10, service[s]->config[c].variable)) == HCI::Status::Success)
+					printf("Parameter %d Added Successfully; Handle: 0x%04X\n", c, service[s]->context.characteristic[c]);
+				else printf("FAILED to add Parameter %d; Status: 0x%02X\n", c, (byte)result);
+#endif // !STACK_DEBUG
+				uuid.id._128bit[6]++;
+			}
+			if (result == HCI::Status::Success) for (byte c = 0; c < service[s]->context.charCnt; c++) if (service[s]->config[c].properties & CHAR_PROP_READ) service[s]->config[c].callback(c, Request::Read, 0, nullptr);
+		}
 	}
+}
+
+P2P::P2P(GATT::UUID uuid, CharConfig conf[])
+{
+	context.charCnt = 0;
+	CharConfig *ptr = conf;
+	uint cnt = 0;
+	while (ptr++->properties) cnt++;
+	context.characteristic = new ushort[cnt];
+	config = (CharConfig *)(new byte[sizeof(CharConfig) * cnt]);
+	if (!context.characteristic || !config)
+	{
+#ifdef STACK_DEBUG
+		printf("P2P Service memory allocation failed\n");
+#endif // !STACK_DEBUG
+		return;
+	}
+#ifdef STACK_DEBUG
+	else printf("P2P Service memory allocation successful\n");
+#endif // !STACK_DEBUG
+	ptr = conf;
+	for (byte i = 0; i < cnt; i++) config[i] = *ptr++;
+	service[serviceCnt++] = this;
+	context.uuid = uuid;
+	context.charCnt = cnt;
 }

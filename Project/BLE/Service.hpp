@@ -15,12 +15,12 @@ public:
 private:
 	struct ServerList
 	{
-		EvtStatus (* ptr[BLE_CFG_SVCCTL_MAX])(TL::Event *evt);
+		EvtStatus (* ptr[BLE_SERVICES_SERVICE_MAX])(TL::Event *evt);
 		byte count;
 	};
 	struct ClientList
 	{
-		EvtStatus(* ptr[BLE_CFG_CLT_MAX])(TL::Event *evt);
+		EvtStatus(* ptr[BLE_SERVICES_CLIENT_MAX])(TL::Event *evt);
 		byte count;
 	};
 	

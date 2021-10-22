@@ -5,8 +5,10 @@
 #include "IPCC.hpp"
 #include "algorithm"
 #include "Service.hpp"
+#include "FreeRTOS.h"
+#include "task.h"
 #ifdef STACK_DEBUG
-#include "Debug.h"
+#include "Debug.hpp"
 #endif // STACK_DEBUG
 
 PLACE_IN_SECTION("MB_MEM1") ALIGN(4) TL::CmdPacket HCI::packet;
@@ -116,7 +118,6 @@ void HCI::eventCallback()
 		else
 		{
 			List::insertTail(&asynchEventQueue, (List::Node *)evt);
-			thread = eventHandlerHandle;
 			portYIELD_FROM_ISR(xTaskResumeFromISR(eventHandlerHandle));
 		}
 	}
@@ -131,6 +132,7 @@ void HCI::send(ushort opcode, Request * request, byte length, byte * payload)
 #ifdef STACK_DEBUG
 	commandTrace(&packet);
 #endif // STACK_DEBUG
+	thread = xTaskGetCurrentTaskHandle();
 	IPCCm::occupy(IPCC_CHANNEL_BLE, false);
 	
 	while (true)// while command status is Busy
@@ -161,7 +163,7 @@ void HCI::send(ushort opcode, Request * request, byte length, byte * payload)
 
 void HCI::init(void(* nextStage)(), TaskHandle_t thread)
 {
-	xTaskCreate(eventHandler, "HCI::eventHandler", configMINIMAL_STACK_SIZE * 2, nullptr, FREERTOS_PRIORITY_BLE, &eventHandlerHandle);
+	xTaskCreate(eventHandler, "HCI::eventHandler", configMINIMAL_STACK_SIZE * 2, nullptr, BLE_FREERTOS_THREAD_PRIORITY, &eventHandlerHandle);
 	vTaskSuspend(eventHandlerHandle);
 	List::initHead(&evtQueue);
 	List::initHead(&cmdEventQueue);

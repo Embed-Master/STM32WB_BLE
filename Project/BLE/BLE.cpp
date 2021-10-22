@@ -1,7 +1,6 @@
 #include "BLE.hpp"
 #include "CoreSettings.h"
 #include "CPU2.hpp"
-#include "StackConfig.hpp"
 #include "SHCI.hpp"
 #include "LE.hpp"
 #include "HAL.hpp"
@@ -38,6 +37,7 @@ byte BLE::manufacturer[14] =
 const byte BLE::configIRvalue[16] = CFG_BLE_IRK;// Identity root key used to derive LTK and CSRK
 const byte BLE::configERvalue[16] = CFG_BLE_ERK;// Encryption root key used to derive LTK and CSRK
 BLE::Context BLE::context;
+void (*BLE::appNotificationCallback[BLE_APP_NOTIFICATION_CALLBACK_CNT])(Notification notification);
 
 struct hci_le_phy_update_complete_event_rp0
 {
@@ -95,8 +95,9 @@ void BLE::appNotification(TL::Event *evt)
 #ifdef STACK_DEBUG
 				printf("DISCONNECTION EVENT WITH CLIENT\n");
 #endif // STACK_DEBUG
+				for (auto p : appNotificationCallback) if (p) p(Notification::Disconnection);
 			}
-			advRequest(Connection::FastAdvertasing, settings.name, 0, nullptr);// restart advertising
+			advRequest(Connection::Advertasing, settings.name, ADVERTISE_INTERVAL_MIN, ADVERTISE_INTERVAL_MAX);// restart advertising
 		}
 		break;
 	case EVT_LE_META_EVENT:
@@ -234,19 +235,16 @@ void BLE::appNotification(TL::Event *evt)
 	}
 }
 
-void BLE::advRequest(Connection status, char *name, byte uuidLen, byte *uuid)
+void BLE::advRequest(Connection status, char *name, ushort advTimeMin, ushort advTimeMax, byte uuidLen, byte *uuid)
 {
-	if (context.connection == status) return;
-	if (!(status == Connection::FastAdvertasing || status == BLE::Connection::LowPowerAdvertasing)) return;
-	
-//	xTimerStop(context.advTim, 0);// Stop the timer, it will be restarted for a new shot
+	if (context.connection == status || status != BLE::Connection::Advertasing) return;
 #ifdef STACK_DEBUG
-	printf("Start %s advertising; Current connection state: %s\n", connectionName[(byte)status], connectionName[(byte)context.connection]);
+	printf("Start advertising; Current connection state: %s\n", connectionName[(byte)context.connection]);
 #endif // STACK_DEBUG
 	HCI::Status result = HCI::Status::InvalidParams;
-	if (status == Connection::LowPowerAdvertasing && context.connection == Connection::FastAdvertasing)
+	if (status == Connection::Advertasing && context.connection == Connection::Advertasing)
 	{
-		result = GAP::setNonDiscoverable(); // Connection in ADVERTISE mode have to stop the current advertising
+		result = GAP::setNonDiscoverable();// Connection in ADVERTISE mode have to stop the current advertising
 #ifdef STACK_DEBUG
 		if(result == HCI::Status::Success) printf("Successfully Stopped Advertising\n");
 		else printf("Stop Advertising Failed; Status: %d\n", (byte)result);
@@ -257,9 +255,7 @@ void BLE::advRequest(Connection status, char *name, byte uuidLen, byte *uuid)
 	char _name[40] = { AD_TYPE_COMPLETE_LOCAL_NAME };
 	strcpy(_name + 1, name);
 	result = GAP::updateAdvData(sizeof(manufacturer), manufacturer);
-	ushort min = status == BLE::Connection::FastAdvertasing ? CFG_FAST_CONN_ADV_INTERVAL_MIN : CFG_LP_CONN_ADV_INTERVAL_MIN;
-	ushort max = status == BLE::Connection::FastAdvertasing ? CFG_FAST_CONN_ADV_INTERVAL_MAX : CFG_LP_CONN_ADV_INTERVAL_MAX;
-	result = GAP::setDiscoverable(GAP::AdvertiseType::Ind, min, max, PUBLIC_ADDR, NO_WHITE_LIST_USE, strlen(_name), (byte *)_name, uuidLen, uuid, 0, 0);
+	result = GAP::setDiscoverable(GAP::AdvertiseType::Ind, advTimeMin, advTimeMax, PUBLIC_ADDR, NO_WHITE_LIST_USE, strlen(_name), (byte *)_name, uuidLen, uuid, 0, 0);
 	if (result == HCI::Status::Success)
 	{
 		context.connection = status;
@@ -327,13 +323,26 @@ void BLE::secondStage(TaskHandle_t thread)
 	Service::init(settings.dis);
 	context.connection = Connection::Idle;
 	context.settings.handle = 0xFFFF;
-	advRequest(Connection::LowPowerAdvertasing, settings.dis.model, 0, 0);// internal name
+	advRequest(Connection::Advertasing, settings.dis.model, ADVERTISE_INTERVAL_MIN, ADVERTISE_INTERVAL_MAX);  // internal name
+}
+
+bool BLE::addNotificationCallback(void (ptr)(Notification))
+{
+	for (byte i = 0; i < BLE_APP_NOTIFICATION_CALLBACK_CNT; i++) if (!appNotificationCallback[i])
+	{
+		appNotificationCallback[i] = ptr;
+		return true;
+	}
+	return false;
 }
 
 BLE::Status BLE::init(Settings &settings)
 {
 	if (!strlen(settings.name) || !strlen(settings.dis.firmware) || !strlen(settings.dis.hardware) || !strlen(settings.dis.manufacturer) || !strlen(settings.dis.model)) return Status::EmptyParameters;
 	BLE::settings = settings;
+//	__NVIC_SetPriorityGrouping(BLE_ISR_PRIORITY_GROUPING);
+//	__NVIC_SetPriority(IRQn_Type::IPCC_C1_RX_IRQn, NVIC_EncodePriority(BLE_ISR_PRIORITY_GROUPING, BLE_FREERTOS_ISR_PRIORITY_GROUP, BLE_FREERTOS_ISR_PRIORITY_SUBGROUP));
+//	__NVIC_SetPriority(IRQn_Type::IPCC_C1_TX_IRQn, NVIC_EncodePriority(BLE_ISR_PRIORITY_GROUPING, BLE_FREERTOS_ISR_PRIORITY_GROUP, BLE_FREERTOS_ISR_PRIORITY_SUBGROUP));
 	__NVIC_SetPriorityGrouping(3);
 	__NVIC_SetPriority(IRQn_Type::IPCC_C1_RX_IRQn, 2);
 	__NVIC_SetPriority(IRQn_Type::IPCC_C1_TX_IRQn, 2);

@@ -24,12 +24,16 @@ public:
 		EmptyParameters,
 		InitalizeError
 	};
-private:
+	enum class Notification : byte
+	{
+		Connection,
+		Disconnection
+	};
+	private:
 	enum class Connection : byte
 	{
 		Idle,
-		FastAdvertasing,
-		LowPowerAdvertasing,
+		Advertasing,
 		Scan,
 		LowPowerConnecting,
 		ConnectedServer,
@@ -38,8 +42,7 @@ private:
 	static constexpr char connectionName[][20] = 
 	{ 
 		{"Idle"},
-		{"Fast"},
-		{"LowPower"},
+		{"Advertasing"},
 		{"Scan"},
 		{"Connecting"},
 		{"ConnectedServer"},
@@ -93,14 +96,16 @@ private:
 	static const byte configIRvalue[16];// Identity root key used to derive LTK and CSRK
 	static const byte configERvalue[16];// Encryption root key used to derive LTK and CSRK
 	static Context context;
-	
-	static void secondStage(TaskHandle_t thread);
-	static void advRequest(Connection status, char *name, byte uuidLen, byte *uuid);
 	static Settings settings;
 	static Status status;
+	static void (*appNotificationCallback[BLE_APP_NOTIFICATION_CALLBACK_CNT])(Notification notification);
+	
+	static void secondStage(TaskHandle_t thread);
+	static void advRequest(Connection status, char *name, ushort advTimeMin, ushort advTimeMax, byte uuidLen = 0, byte *uuid = nullptr);
 	
 public:
 	static void appNotification(TL::Event *evt);
 	static Status init(Settings &settings);
 	static Status getStatus() { return status; }
+	static bool addNotificationCallback(void (ptr)(Notification));
 };

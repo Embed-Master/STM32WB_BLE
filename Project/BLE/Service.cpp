@@ -33,12 +33,12 @@ Service::EvtStatus Service::eventReceived(TL::Event *evt)
 
 void Service::regServer(EvtStatus (* handler)(TL::Event *))
 {
-	if (srvList.count < BLE_CFG_SVCCTL_MAX) srvList.ptr[srvList.count++] = handler;
+	if (srvList.count < BLE_SERVICES_SERVICE_MAX) srvList.ptr[srvList.count++] = handler;
 }
 
 void Service::regClient(EvtStatus (* handler)(TL::Event *))
 {
-	if (cltList.count < BLE_CFG_CLT_MAX) cltList.ptr[cltList.count++] = handler;
+	if (cltList.count < BLE_SERVICES_CLIENT_MAX) cltList.ptr[cltList.count++] = handler;
 }
 
 void Service::init(DIS::Settings &settings)
