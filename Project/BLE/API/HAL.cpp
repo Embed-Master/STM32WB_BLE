@@ -139,29 +139,16 @@ HCI::Status HAL::setTxPowerLevel(Power level, byte enHighPower)
 //	}
 //	return BLE_STATUS_SUCCESS;
 //}
-//
-//HCI::Status aci_hal_get_link_status(byte Link_Status[8],
-//	uint16_t Link_Connection_Handle[16 / 2])
-//{
-//	struct hci_request rq;
-//	aci_hal_get_link_status_rp0 resp;
-//	Osal_MemSet(&resp, 0, sizeof(resp));
-//	Osal_MemSet(&rq, 0, sizeof(rq));
-//	rq.ogf = 0x3f;
-//	rq.ocf = 0x017;
-//	rq.rparam = &resp;
-//	rq.rlen = sizeof(resp);
-//	if (hci_send_req(&rq, FALSE) < 0)
-//		return BLE_STATUS_TIMEOUT;
-//	if (resp.Status) 
-//	{
-//		return resp.Status;
-//	}
-//	Osal_MemCpy((void *) Link_Status, (const void *) resp.Link_Status, 8);
-//	Osal_MemCpy((void *) Link_Connection_Handle, (const void *) resp.Link_Connection_Handle, 16);
-//	return BLE_STATUS_SUCCESS;
-//}
-//
+
+HCI::Status HAL::getLinkStatus(LinkStatus &status)
+{
+	GetLinkStatus::Response rsp = { };
+	HCI::Request rq = { &rsp, sizeof(rsp) };
+	HCI::send((ushort)Opcode::GetLinkStatus, &rq);
+	if (rsp.status == HCI::Status::Success) status = rsp.link;
+	return rsp.status;
+}
+
 //HCI::Status aci_hal_set_radio_activity_mask(uint16_t Radio_Activity_Mask)
 //{
 //	struct hci_request rq;
@@ -338,27 +325,16 @@ HCI::Status HAL::setTxPowerLevel(Power level, byte enHighPower)
 //	}
 //	return BLE_STATUS_SUCCESS;
 //}
-//
-//HCI::Status aci_hal_read_raw_rssi(byte Value[3])
-//{
-//	struct hci_request rq;
-//	aci_hal_read_raw_rssi_rp0 resp;
-//	Osal_MemSet(&resp, 0, sizeof(resp));
-//	Osal_MemSet(&rq, 0, sizeof(rq));
-//	rq.ogf = 0x3f;
-//	rq.ocf = 0x032;
-//	rq.rparam = &resp;
-//	rq.rlen = sizeof(resp);
-//	if (hci_send_req(&rq, FALSE) < 0)
-//		return BLE_STATUS_TIMEOUT;
-//	if (resp.Status) 
-//	{
-//		return resp.Status;
-//	}
-//	Osal_MemCpy((void *) Value, (const void *) resp.Value, 3);
-//	return BLE_STATUS_SUCCESS;
-//}
-//
+
+HCI::Status HAL::readRawRssi(byte rssi[3])
+{
+	ReadRawRssi::Response rsp = { };
+	HCI::Request rq = { &rsp, sizeof(rsp) };
+	HCI::send((ushort)Opcode::ReadRawRSSI, &rq);
+	if (rsp.status == HCI::Status::Success) memcpy(rssi, rsp.rssi, 3);
+	return rsp.status;
+}
+
 //HCI::Status aci_hal_rx_start(byte RF_Channel)
 //{
 //	struct hci_request rq;

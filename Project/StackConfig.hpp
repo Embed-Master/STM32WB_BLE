@@ -3,7 +3,8 @@
 /******************************************************************************
  * Stack settings
  ******************************************************************************/
-#define STACK_VERSION						0.8
+//#define STACK_DEBUG
+#define STACK_VERSION						0.82
 #define BLE_FREERTOS_THREAD_PRIORITY		4// BLE OS thread priority; Higher number - higher priority
 #define BLE_ISR_PRIORITY_GROUPING			5
 #define BLE_FREERTOS_ISR_PRIORITY_GROUP		1// BLE ISR priority; Lower number - higher priority
@@ -13,19 +14,11 @@
 /******************************************************************************
  * Services
  ******************************************************************************/
-#define BLE_CFG_SVCCTL_MAX						1
-#define BLE_CFG_CLT_MAX							0
+#define BLE_SERVICES_SERVICE_MAX			1
+#define BLE_SERVICES_CLIENT_MAX				0
 
-/**
- * Define Advertising parameters
- */
-#define CFG_LP_CONN_ADV_INTERVAL_MIN      (0x640) /**< 1s */
-#define CFG_LP_CONN_ADV_INTERVAL_MAX      (0xfa0) /**< 2.5s */
-
-/**
- * P2P Service
- */
-#define P2P_MAX_SERVICE_CNT 8
+// P2P Service
+#define P2P_MAX_SERVICE_CNT					8
 
 // Characteristic UUID's scheme
 /*
@@ -53,7 +46,7 @@
  * for a CC/CS event, In that case, the notification TL_BLE_HCI_ToNot() is called to indicate
  * to the application a HCI command did not receive its command event within 30s (Default HCI Timeout).
  */
-#define CFG_TLBLE_EVT_QUEUE_LENGTH 5
+#define CFG_TLBLE_EVT_QUEUE_LENGTH			5
 
 /**
  * This parameter should be set to fit most events received by the HCI layer. It defines the buffer size of each element

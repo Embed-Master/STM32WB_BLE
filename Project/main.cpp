@@ -3,9 +3,6 @@
 #include "task.h"
 #include "BLE.hpp"
 #include "RTC.hpp"
-#ifdef STACK_DEBUG
-#include "Debug.hpp"
-#endif // STACK_DEBUG
 #include "stdio.h"
 #include "P2P.hpp"
 
@@ -51,8 +48,8 @@ extern "C" void vApplicationStackOverflowHook(TaskHandle_t xTask, char *pcTaskNa
 		{
 			once = false;
 #ifdef STACK_DEBUG
-			serial.sendLine("Stack overflow");
-			serial.sendLine(pcTaskName);
+			printf("Stack overflow\n");
+			printf("%s\n", pcTaskName);
 #endif // STACK_DEBUG
 		}
 	}

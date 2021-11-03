@@ -4,8 +4,8 @@
 
 class SHCI
 {
-	static const byte OGF = 0x3F; // OpCode Group Field
-	static const ushort OCF_BASE = 0x50; // OpCode Command Field
+	static const byte OGF = 0x3F;// OpCode Group Field
+	static const ushort OCF_BASE = 0x50;// OpCode Command Field
 	static TL::CmdPacket packet;
 	static List::Node evtQueue;
 	static List::Node asynchEventQueue;

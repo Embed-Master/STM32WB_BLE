@@ -1,6 +1,7 @@
 #pragma once
 
 #include "TL.hpp"
+#include "semphr.h"
 
 /* HCI parameters length */
 #define HCI_COMMAND_MAX_PARAM_LEN        255
@@ -93,10 +94,11 @@ public:
 		void *parameter;
 		uint length;
 	};
+	static TaskHandle_t eventHandlerHandle;
 	
 private:		
 	static TaskHandle_t thread;
-	static TaskHandle_t eventHandlerHandle;
+	static SemaphoreHandle_t mutex;
 	static TL::CmdPacket packet;
 	static List::Node evtQueue;
 	static List::Node cmdEventQueue;
@@ -111,7 +113,7 @@ private:
 	static void eventCallback();
 	static void eventHandler(void *args);
 	
-	public:
+public:
 	static void send(ushort opcode, Request * request = nullptr, byte length = 0, byte * payload = nullptr);
 	static void init(void (* nextStage)(), TaskHandle_t initThread);
 };

@@ -3,9 +3,6 @@
 #include "stdio.h"
 #include "string.h"
 #include "IPCC.hpp"
-#ifdef STACK_DEBUG
-#include "Debug.hpp"
-#endif // STACK_DEBUG
 
 PLACE_IN_SECTION("MB_MEM2") ALIGN(4) TL::CmdPacket SHCI::packet;
 PLACE_IN_SECTION("MB_MEM2") ALIGN(4) List::Node SHCI::evtQueue;
@@ -19,9 +16,9 @@ void SHCI::commandTrace(TL::CmdPacket *cmd)
 	printf("Sys cmd: 0x%04X;", cmd->serial.cmd.code);
 	if (cmd->serial.cmd.length)
 	{
-		printf(" Payload: ");
+		printf(" Payload: \n");
+		for (ushort i = 0; i < cmd->serial.cmd.length; i++) printf(" %02X", *((byte*)(cmd->serial.cmd.payload + i)));
 		fflush(stdout);
-		serial.sendBufHex(cmd->serial.cmd.payload, cmd->serial.cmd.length);
 	}
 	else printf("\n");
 }
@@ -34,9 +31,9 @@ void SHCI::eventTrace(TL::EvtPacket *evt)
 		printf(" Subevtcode: 0x%04X;", ((TL::BleEvt *)(evt->serial.evt.payload))->code);
 		if (evt->serial.evt.length > 2)
 		{
-			printf(" Payload: ");
+			printf(" Payload: \n");
+			for (ushort i = 0; i < evt->serial.evt.length - 2; i++) printf(" %02X", *((byte*)(((TL::BleEvt*)(evt->serial.evt.payload))->payload + i)));
 			fflush(stdout);
-			serial.sendBufHex(((TL::BleEvt *)(evt->serial.evt.payload))->payload, evt->serial.evt.length - 2);
 		}
 		else printf("\n");
 	}
@@ -52,9 +49,9 @@ void SHCI::responseTrace(TL::EvtPacket *evt)
 		printf("Status: 0x%02X;", ((TL::CcEvt *)(evt->serial.evt.payload))->payload[0]);
 		if (evt->serial.evt.length > 4)
 		{
-			serial.sendLine(" Payload: ");
+			printf(" Payload: \n");
+			for (ushort i = 0; i < evt->serial.evt.length - 4; i++) printf(" %02X", *((byte*)(((TL::CcEvt*)(evt->serial.evt.payload))->payload + 1 + i)));
 			fflush(stdout);
-			serial.sendBufHex(&((TL::CcEvt *)(evt->serial.evt.payload))->payload[1], evt->serial.evt.length - 4);
 		}
 		else printf("\n");
 	}

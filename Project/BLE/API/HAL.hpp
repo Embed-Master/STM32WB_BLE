@@ -4,22 +4,6 @@
 
 class HAL
 {
-	enum class Opcode : ushort
-	{
-		WriteConfigData = 0xFC0C,
-		SetTxPower		= 0xFC0F
-	};
-	struct WriteConfigData
-	{
-		byte offset;
-		byte length;
-		byte value[BLE_CMD_MAX_PARAM_LEN - 2];
-	} __attribute__((packed));
-	struct setTxPowerCom
-	{
-		bool highPowerEn;
-		byte power;
-	} __attribute__((packed));
 public:
 	enum class Power : byte
 	{
@@ -56,6 +40,49 @@ public:
 		_5_dBm			= 0x1E,
 		_6_dBm			= 0x1F
 	};
+	struct LinkStatus
+	{
+		byte status[8];
+		ushort handle[8];
+	};
+	
+private:
+	enum class Opcode : ushort
+	{
+		WriteConfigData = 0xFC0C,
+		SetTxPower      = 0xFC0F,
+		GetLinkStatus   = 0xFC17,
+		ReadRawRSSI     = 0xFC32
+	};
+	struct WriteConfigData
+	{
+		byte offset;
+		byte length;
+		byte value[BLE_CMD_MAX_PARAM_LEN - 2];
+	} __attribute__((packed));
+	struct setTxPowerCom
+	{
+		bool highPowerEn;
+		byte power;
+	} __attribute__((packed));
+	struct GetLinkStatus
+	{
+		struct Response
+		{
+			HCI::Status status;
+			LinkStatus link;
+		} __attribute__((packed));
+	};
+	struct ReadRawRssi
+	{
+		struct Response
+		{
+			HCI::Status status;
+			byte rssi[3];
+		} __attribute__((packed));
+	};
+
+public:
 //	/**
 //	  * @brief This command returns the build number associated with the firmware version currently running
 //	  * @param[out] Build_Number Build number of the firmware.
@@ -195,14 +222,14 @@ public:
 //	  * @retval Value indicating success or error code.
 //	  */
 //	static HCI::Status toneStop();
-//
-//	/**
-//	  * @brief This command returns the status of the 8 Bluetooth low energy links managed by the device
-//	  * @param[out] Link_Status Array of link status (8 links). Each link status is 1 byte.
-//	  * @param[out] Link_Connection_Handle Array of connection handles (2 bytes) for 8 links.
-//	  * @retval Value indicating success or error code.
-//	  */
-//	static HCI::Status getLinkStatus(byte status[8], ushort connectionHandle[8]);
+
+	/**
+	  * @brief This command returns the status of the 8 Bluetooth low energy links managed by the device
+	  * @param[out] Link_Status Array of link status (8 links). Each link status is 1 byte.
+	  * @param[out] Link_Connection_Handle Array of connection handles (2 bytes) for 8 links.
+	  * @retval Value indicating success or error code.
+	  */
+	static HCI::Status getLinkStatus(LinkStatus &status);
 //
 //	/**
 //	  * @brief This command set the bitmask associated to @ref end_of_radio_activity_event. 
@@ -286,14 +313,14 @@ public:
 //	  * @retval Value indicating success or error code.
 //	  */
 //	static HCI::Status writeRadioReg(byte address, byte value);
-//
-//	/**
-//	  * @brief This command returns the raw value of the RSSI 
-//	  * @param[out] Value RAW RSSI value
-//	  * @retval Value indicating success or error code.
-//	  */
-//	static HCI::Status readRawRssi(byte value[3]);
-//
+
+	/**
+	  * @brief This command returns the raw value of the RSSI 
+	  * @param[out] Value RAW RSSI value
+	  * @retval Value indicating success or error code.
+	  */
+	static HCI::Status readRawRssi(byte rssi[3]);
+
 //	/**
 //	  * @brief This command does set up the RF to listen to a specific RF channel 
 //	  * @param RF_Channel BLE Channel ID, from 0x00 to 0x27 meaning (2.402 + 2*0xXX) GHz

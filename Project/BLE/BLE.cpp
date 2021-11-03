@@ -80,6 +80,16 @@ struct aci_gap_numeric_comparison_value_event_rp0
 	uint Numeric_Value;
 } __attribute__((packed));
 
+struct Event
+{
+	struct CommandComplete
+	{
+		byte packets;
+		ushort code;
+		byte parameter[1];
+	};
+};
+	
 void BLE::appNotification(TL::Event *evt)
 {
 	HCI::Status ret = HCI::Status::InvalidParams;
@@ -97,7 +107,7 @@ void BLE::appNotification(TL::Event *evt)
 #endif // STACK_DEBUG
 				for (auto p : appNotificationCallback) if (p) p(Notification::Disconnection);
 			}
-			advRequest(Connection::Advertasing, settings.name, ADVERTISE_INTERVAL_MIN, ADVERTISE_INTERVAL_MAX);// restart advertising
+			advRequest(Connection::Advertasing, settings.name, settings.advInterval.min, settings.advInterval.max);
 		}
 		break;
 	case EVT_LE_META_EVENT:
@@ -105,42 +115,34 @@ void BLE::appNotification(TL::Event *evt)
 			TL::Data *meta_evt = (TL::Data *) evt->payload;
 			switch (meta_evt->type)
 			{
-			case EVT_LE_CONN_UPDATE_COMPLETE:
 #ifdef STACK_DEBUG
+			case EVT_LE_CONN_UPDATE_COMPLETE:
 				printf("CONNECTION UPDATE EVENT WITH CLIENT\n");
-#endif // STACK_DEBUG
 				break;
 			case EVT_LE_PHY_UPDATE_COMPLETE:
 				{
 					hci_le_phy_update_complete_event_rp0 *evt_le_phy_update_complete = (hci_le_phy_update_complete_event_rp0*)meta_evt->data;
-#ifdef STACK_DEBUG
 					printf("EVT_UPDATE_PHY_COMPLETE\n");
 					if (evt_le_phy_update_complete->Status) printf("EVT_UPDATE_PHY_COMPLETE, status nok\n"); 
 					else printf("EVT_UPDATE_PHY_COMPLETE, status ok\n");
-#endif // STACK_DEBUG
 					byte TX_PHY, RX_PHY;
 					if (LE::readPhy(context.settings.handle, &TX_PHY, &RX_PHY) == HCI::Status::Success)
 					{
-#ifdef STACK_DEBUG
 						printf("Read_PHY success\n");
 						printf("PHY Param TX = %d, RX = %d\n", TX_PHY, RX_PHY);
-#endif // STACK_DEBUG
 					}
-#ifdef STACK_DEBUG
 					else printf("Read conf not succeess\n");
-#endif // STACK_DEBUG
 				}
 				break;
+#endif // STACK_DEBUG
 			case EVT_LE_CONN_COMPLETE:
 				{
 					hci_le_connection_complete_event_rp0 *connection_complete_event;
 					connection_complete_event = (hci_le_connection_complete_event_rp0 *) meta_evt->data;// The connection is done, there is no need anymore to schedule the LP ADV
-//					xTimerStop(context.advTim, 0);
 #ifdef STACK_DEBUG
 					printf("EVT_LE_CONN_COMPLETE for connection handle 0x%x\n", connection_complete_event->Connection_Handle);
 #endif // STACK_DEBUG
-					if (context.connection == BLE::Connection::LowPowerConnecting) context.connection = BLE::Connection::ConnectedClient;// Connection as client
-					else context.connection = BLE::Connection::ConnectedServer; // Connection as server
+					context.connection = BLE::Connection::ConnectedServer;
 					context.settings.handle = connection_complete_event->Connection_Handle;
 					P2P::connectionSet(context.settings.handle);
 				}
@@ -149,18 +151,23 @@ void BLE::appNotification(TL::Event *evt)
 			}
 		}
 		break;
+	case EVT_HCI_COMMAND_COMPLETE_EVENT:
+		{
+			static volatile Event::CommandComplete *handle = (Event::CommandComplete *)evt->payload;
+			(void)handle->code;
+		}
+		break;
 	case EVT_VENDOR:
 		{
 			TL::BleEvt *blue_evt = (TL::BleEvt *) evt->payload;
 			switch (blue_evt->code)
 			{
-				aci_gap_pairing_complete_event_rp0 *pairing_complete;
-			case EVT_BLUE_GAP_LIMITED_DISCOVERABLE:
 #ifdef STACK_DEBUG
+			case EVT_BLUE_GAP_LIMITED_DISCOVERABLE:
 				printf("\r\n\r** EVT_BLUE_GAP_LIMITED_DISCOVERABLE\n");
-#endif // STACK_DEBUG
 				break;
-			case EVT_BLUE_GAP_PASS_KEY_REQUEST:  
+#endif // STACK_DEBUG
+			case EVT_BLUE_GAP_PASS_KEY_REQUEST:
 #ifdef STACK_DEBUG
 				printf("\r\n\r** EVT_BLUE_GAP_PASS_KEY_REQUEST\n");
 #endif // STACK_DEBUG
@@ -169,38 +176,13 @@ void BLE::appNotification(TL::Event *evt)
 				printf("aci_gap_pass_key_resp\n");
 #endif // STACK_DEBUG
 				break;
-			case EVT_BLUE_GAP_AUTHORIZATION_REQUEST:
-#ifdef STACK_DEBUG
-				printf("EVT_BLUE_GAP_AUTHORIZATION_REQUEST\n");
-#endif // STACK_DEBUG
-				break;
-			case EVT_BLUE_GAP_SLAVE_SECURITY_INITIATED:
-#ifdef STACK_DEBUG
-				printf("EVT_BLUE_GAP_SLAVE_SECURITY_INITIATED\n");
-#endif // STACK_DEBUG
-				break;
-			case EVT_BLUE_GAP_BOND_LOST:    
+			case EVT_BLUE_GAP_BOND_LOST:
 #ifdef STACK_DEBUG
 				printf("EVT_BLUE_GAP_BOND_LOST\n");
 #endif // STACK_DEBUG
 				GAP::allowRebond(context.settings.handle);
 #ifdef STACK_DEBUG
 				printf("Send allow rebond\n");
-#endif // STACK_DEBUG
-				break;
-			case EVT_BLUE_GAP_DEVICE_FOUND:
-#ifdef STACK_DEBUG
-				printf("EVT_BLUE_GAP_DEVICE_FOUND\n");
-#endif // STACK_DEBUG
-				break;
-			case EVT_BLUE_GAP_ADDR_NOT_RESOLVED:
-#ifdef STACK_DEBUG
-				printf("EVT_BLUE_GAP_DEVICE_FOUND\n");
-#endif // STACK_DEBUG
-				break;
-			case EVT_BLUE_GAP_KEYPRESS_NOTIFICATION:
-#ifdef STACK_DEBUG
-				printf("EVT_BLUE_GAP_KEYPRESS_NOTIFICATION\n");
 #endif // STACK_DEBUG
 				break;
 			case EVT_BLUE_GAP_NUMERIC_COMPARISON_VALUE:
@@ -213,21 +195,35 @@ void BLE::appNotification(TL::Event *evt)
 				printf("aci_gap_numeric_comparison_value_confirm_yesno-->YES\n");
 #endif // STACK_DEBUG
 				break;
-			case (EVT_BLUE_GAP_PAIRING_CMPLT):
-				{
-					pairing_complete = (aci_gap_pairing_complete_event_rp0*)blue_evt->payload;
 #ifdef STACK_DEBUG
-					printf("BLE_CTRL_App_Notification: EVT_BLUE_GAP_PAIRING_CMPLT, pairing_complete->Status = %d\n", pairing_complete->Status);
-					if (pairing_complete->Status == 0) printf("Pairing OK\n");
-					else printf("Pairing KO\n");
-#endif // STACK_DEBUG
-				}
+			case EVT_BLUE_GAP_DEVICE_FOUND:
+				printf("EVT_BLUE_GAP_DEVICE_FOUND\n");
 				break;
+			case EVT_BLUE_GAP_ADDR_NOT_RESOLVED:
+				printf("EVT_BLUE_GAP_DEVICE_FOUND\n");
+				break;
+			case EVT_BLUE_GAP_KEYPRESS_NOTIFICATION:
+				printf("EVT_BLUE_GAP_KEYPRESS_NOTIFICATION\n");
+				break;
+			case EVT_BLUE_GAP_PAIRING_CMPLT:
+			{
+				aci_gap_pairing_complete_event_rp0* pairing_complete = (aci_gap_pairing_complete_event_rp0*)blue_evt->payload;
+				printf("BLE_CTRL_App_Notification: EVT_BLUE_GAP_PAIRING_CMPLT, pairing_complete->Status = %d\n", pairing_complete->Status);
+				if (pairing_complete->Status == 0) printf("Pairing OK\n");
+				else printf("Pairing KO\n");
+			}
+			break;
 			case EVT_BLUE_GAP_PROCEDURE_COMPLETE:
-#ifdef STACK_DEBUG
 				printf("EVT_BLUE_GAP_PROCEDURE_COMPLETE\n");
-#endif // STACK_DEBUG
 				break;
+			case EVT_BLUE_GAP_AUTHORIZATION_REQUEST:
+				printf("EVT_BLUE_GAP_AUTHORIZATION_REQUEST\n");
+				break;
+			case EVT_BLUE_GAP_SLAVE_SECURITY_INITIATED:
+				printf("EVT_BLUE_GAP_SLAVE_SECURITY_INITIATED\n");
+				break;
+#endif // STACK_DEBUG
+			default: break;
 			}
 		}
 		break;
@@ -251,7 +247,6 @@ void BLE::advRequest(Connection status, char *name, ushort advTimeMin, ushort ad
 #endif // STACK_DEBUG
 	}
 	context.connection = BLE::Connection::Idle;
-	// Start Fast or Low Power Advertising
 	char _name[40] = { AD_TYPE_COMPLETE_LOCAL_NAME };
 	strcpy(_name + 1, name);
 	result = GAP::updateAdvData(sizeof(manufacturer), manufacturer);
@@ -298,11 +293,11 @@ void BLE::secondStage(TaskHandle_t thread)
 	thread);
 	LE::reset();// Initialize HCI layer; HCI Reset to synchronise BLE Stack
 	HAL::writeConfigData(CONFIG_DATA_PUBADDR_OFFSET, CONFIG_DATA_PUBADDR_LEN, settings.dis.serial);
-	for (byte i = 0; i < 6; i++) manufacturer[sizeof(manufacturer) - i - 1] = settings.dis.serial[i]; // BLE MAC in ADV Packet
+	for (byte i = 0; i < 6; i++) manufacturer[sizeof(manufacturer) - i - 1] = settings.dis.serial[i];// BLE MAC in ADV Packet
 	HAL::writeConfigData(CONFIG_DATA_IR_OFFSET, CONFIG_DATA_IR_LEN, (byte *)configIRvalue);// Write Identity root key used to derive LTK and CSRK
 	HAL::writeConfigData(CONFIG_DATA_ER_OFFSET, CONFIG_DATA_ER_LEN, (byte *)configERvalue);// Write Encryption root key used to derive LTK and CSRK
 	HAL::writeConfigData(CONFIG_DATA_RANDOM_ADDRESS_OFFSET, CONFIG_DATA_RANDOM_ADDRESS_LEN, (byte *)UID64_BASE);
-	HAL::setTxPowerLevel(HAL::Power::_0_dBm, true);
+	HAL::setTxPowerLevel(HAL::Power::_6_dBm, true);
 	GATT::init();
 	GAP::InitHandlers handlers;
 	if (GAP::init(GAP::Role::Peripheral, false, strlen(settings.name), handlers) == HCI::Status::Success)// Initialize GAP interface
@@ -316,14 +311,14 @@ void BLE::secondStage(TaskHandle_t thread)
 		return;
 	}
 	LE::setDefaultPhy(ALL_PHYS_PREFERENCE, TX_2M_PREFERRED, RX_2M_PREFERRED);// Initialize Default PHY
-	GAP::setIoCapability(CFG_IO_CAPABILITY); // Initialize IO capability
+	GAP::setIoCapability(CFG_IO_CAPABILITY);// Initialize IO capability
 	// Initialize authentication
 	GAP::setAuthenticationRequirement(	CFG_BONDING_MODE, CFG_MITM_PROTECTION, CFG_SC_SUPPORT, CFG_KEYPRESS_NOTIFICATION_SUPPORT, CFG_ENCRYPTION_KEY_SIZE_MIN, CFG_ENCRYPTION_KEY_SIZE_MAX, CFG_USED_FIXED_PIN, CFG_FIXED_PIN, PUBLIC_ADDR);
 	if (CFG_BONDING_MODE) GAP::configureWhitelist();
 	Service::init(settings.dis);
 	context.connection = Connection::Idle;
 	context.settings.handle = 0xFFFF;
-	advRequest(Connection::Advertasing, settings.dis.model, ADVERTISE_INTERVAL_MIN, ADVERTISE_INTERVAL_MAX);  // internal name
+	advRequest(Connection::Advertasing, settings.name, settings.advInterval.min, settings.advInterval.max);
 }
 
 bool BLE::addNotificationCallback(void (ptr)(Notification))
@@ -336,9 +331,11 @@ bool BLE::addNotificationCallback(void (ptr)(Notification))
 	return false;
 }
 
+//static byte request[2];
 BLE::Status BLE::init(Settings &settings)
 {
-	if (!strlen(settings.name) || !strlen(settings.dis.firmware) || !strlen(settings.dis.hardware) || !strlen(settings.dis.manufacturer) || !strlen(settings.dis.model)) return Status::EmptyParameters;
+	if (!strlen(settings.name) || !strlen(settings.dis.firmware) || !strlen(settings.dis.hardware) || !strlen(settings.dis.manufacturer) || !strlen(settings.dis.model) || !settings.advInterval.max || !settings.advInterval.min) return Status::EmptyParameters;
+	if (settings.advInterval.min < 0x20 || settings.advInterval.min > 0x4000 || settings.advInterval.max < 0x20 || settings.advInterval.max > 0x4000) return Status::InvalidParameters;
 	BLE::settings = settings;
 //	__NVIC_SetPriorityGrouping(BLE_ISR_PRIORITY_GROUPING);
 //	__NVIC_SetPriority(IRQn_Type::IPCC_C1_RX_IRQn, NVIC_EncodePriority(BLE_ISR_PRIORITY_GROUPING, BLE_FREERTOS_ISR_PRIORITY_GROUP, BLE_FREERTOS_ISR_PRIORITY_SUBGROUP));
@@ -351,5 +348,13 @@ BLE::Status BLE::init(Settings &settings)
 	TL::init();
 	SHCI::init(secondStage);
 	CPU2::enable();
+
 	return Status::Success;
+}
+
+BLE::Settings::Settings()
+{
+	memset(this, sizeof(Settings), 0);
+	advInterval.min = 0x640;// 1s
+	advInterval.max = 0xFA0;// 2.5s
 }

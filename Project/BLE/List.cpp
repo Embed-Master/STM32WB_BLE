@@ -21,32 +21,32 @@ void List::removeHead(Node * listHead, Node ** node)
 
 void List::insertTail(Node * listHead, Node * node)
 {
-	uint primask_bit = __get_PRIMASK(); // backup PRIMASK bit
-	__disable_irq(); // Disable all interrupts by setting PRIMASK bit on Cortex
+	uint primask_bit = __get_PRIMASK();// backup PRIMASK bit
+	__disable_irq();// Disable all interrupts by setting PRIMASK bit on Cortex
 	node->next = listHead;
 	node->prev = listHead->prev;
 	listHead->prev = node;
 	(node->prev)->next = node;
-	__set_PRIMASK(primask_bit); // Restore PRIMASK bit
+	__set_PRIMASK(primask_bit);// Restore PRIMASK bit
 }
 
 void List::insertHead(Node * listHead, Node * node)
 {
-	uint primask_bit = __get_PRIMASK();  // backup PRIMASK bit
-	__disable_irq(); // Disable all interrupts by setting PRIMASK bit on Cortex
+	uint primask_bit = __get_PRIMASK();// backup PRIMASK bit
+	__disable_irq();// Disable all interrupts by setting PRIMASK bit on Cortex
 	node->next = listHead->next;
 	node->prev = listHead;
 	listHead->next = node;
 	(node->next)->prev = node;
-	__set_PRIMASK(primask_bit); // Restore PRIMASK bit
+	__set_PRIMASK(primask_bit);// Restore PRIMASK bit
 }
 
 bool List::empty(Node * listHead)
 {
-	uint primask_bit = __get_PRIMASK();  // backup PRIMASK bit
-	__disable_irq();  // Disable all interrupts by setting PRIMASK bit on Cortex
+	uint primask_bit = __get_PRIMASK();// backup PRIMASK bit
+	__disable_irq();// Disable all interrupts by setting PRIMASK bit on Cortex
 	bool result = listHead->next == listHead;
-	__set_PRIMASK(primask_bit);  // Restore PRIMASK bit
+	__set_PRIMASK(primask_bit);// Restore PRIMASK bit
 	return result;
 }
 

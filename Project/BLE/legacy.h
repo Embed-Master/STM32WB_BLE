@@ -3,18 +3,19 @@
 /******************************************************************************
  * Transport Layer (TL)
  ******************************************************************************/
-#define TL_EVT_HDR_SIZE				3
+#define TL_EVT_HDR_SIZE					3
 
-#define TL_BLEEVT_CC_OPCODE			0x0E
-#define TL_BLEEVT_CS_OPCODE			0x0F
-#define TL_BLEEVT_VS_OPCODE			0xFF
+#define TL_BLEEVT_CC_OPCODE				0x0E
+#define TL_BLEEVT_CS_OPCODE				0x0F
+#define TL_BLEEVT_VS_OPCODE				0xFF
 
-#define EVT_VENDOR					0xFF
-#define EVT_DISCONN_COMPLETE		0x05
-#define EVT_LE_META_EVENT			0x3E
-#define EVT_LE_CONN_UPDATE_COMPLETE	0x03
-#define EVT_LE_CONN_COMPLETE		0x01
-#define EVT_LE_PHY_UPDATE_COMPLETE	0x0C
+#define EVT_VENDOR						0xFF
+#define EVT_DISCONN_COMPLETE			0x05
+#define EVT_LE_META_EVENT				0x3E
+#define EVT_LE_CONN_UPDATE_COMPLETE		0x03
+#define EVT_LE_CONN_COMPLETE			0x01
+#define EVT_LE_PHY_UPDATE_COMPLETE		0x0C
+#define EVT_HCI_COMMAND_COMPLETE_EVENT	0x0E
 
 /******************************************************************************
  * Services
@@ -88,7 +89,7 @@
 /* Advertising policy for filtering (white list related)
  * See hci_le_set_advertising_parameters
  */
-#define NO_WHITE_LIST_USE                      0x00
-#define WHITE_LIST_FOR_ONLY_SCAN               0x01
-#define WHITE_LIST_FOR_ONLY_CONN               0x02
-#define WHITE_LIST_FOR_ALL                     0x03
+#define NO_WHITE_LIST_USE			0x00
+#define WHITE_LIST_FOR_ONLY_SCAN	0x01
+#define WHITE_LIST_FOR_ONLY_CONN	0x02
+#define WHITE_LIST_FOR_ALL			0x03

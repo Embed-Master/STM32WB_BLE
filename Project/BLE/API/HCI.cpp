@@ -7,9 +7,6 @@
 #include "Service.hpp"
 #include "FreeRTOS.h"
 #include "task.h"
-#ifdef STACK_DEBUG
-#include "Debug.hpp"
-#endif // STACK_DEBUG
 
 PLACE_IN_SECTION("MB_MEM1") ALIGN(4) TL::CmdPacket HCI::packet;
 PLACE_IN_SECTION("MB_MEM2") ALIGN(4) List::Node HCI::evtQueue;
@@ -17,6 +14,7 @@ List::Node HCI::cmdEventQueue;
 List::Node HCI::asynchEventQueue;
 PLACE_IN_SECTION("MB_MEM2") ALIGN(4) byte HCI::csBuffer[sizeof(TL::PacketHeader) + TL_EVT_HDR_SIZE + sizeof(TL::CsEvt)];
 TaskHandle_t HCI::thread;
+SemaphoreHandle_t HCI::mutex;
 TaskHandle_t HCI::eventHandlerHandle;
 
 #ifdef STACK_DEBUG
@@ -25,9 +23,9 @@ void HCI::commandTrace(TL::CmdPacket *pack)
 	printf("Ble cmd: 0x%04X;", pack->serial.cmd.code);
 	if (pack->serial.cmd.length)
 	{
-		printf(" Payload: ");
+		printf(" Payload: \n");
+		for (ushort i = 0; i < pack->serial.cmd.length; i++) printf(" %02X", *((byte*)(pack->serial.cmd.payload + i)));
 		fflush(stdout);
-		serial.sendBufHex(pack->serial.cmd.payload, pack->serial.cmd.length);
 	}
 	else printf("\n");
 }
@@ -40,9 +38,9 @@ void HCI::eventTrace(TL::EvtPacket *evt)
 		printf(" Subevtcode: 0x%04X;", ((TL::BleEvt *)(evt->serial.evt.payload))->code);
 		if (evt->serial.evt.length > 2)
 		{
-			printf(" Payload: ");
+			printf(" Payload: \n");
+			for (ushort i = 0; i < evt->serial.evt.length - 2; i++) printf(" %02X", *((byte*)(((TL::BleEvt*)(evt->serial.evt.payload))->payload + i)));
 			fflush(stdout);
-			serial.sendBufHex(((TL::BleEvt *)(evt->serial.evt.payload))->payload, evt->serial.evt.length - 2);
 		}
 		else printf("\n");
 	}
@@ -50,9 +48,9 @@ void HCI::eventTrace(TL::EvtPacket *evt)
 	{
 		if (evt->serial.evt.length)
 		{
-			printf(" Payload: ");
+			printf(" Payload: \n");
+			for (ushort i = 0; i < evt->serial.evt.length; i++) printf(" %02X", *((byte*)(evt->serial.evt.payload + i)));
 			fflush(stdout);
-			serial.sendBufHex(evt->serial.evt.payload, evt->serial.evt.length);
 		}
 		else printf("\n");
 	}
@@ -72,9 +70,9 @@ void HCI::responseTrace(TL::EvtPacket *evt)
 		{
 			if (evt->serial.evt.length > 4)
 			{
-				printf(" Payload: ");
+				printf(" Payload: \n");
+				for (ushort i = 0; i < evt->serial.evt.length - 4; i++) printf(" %02X", *((byte*)(cEvt->payload + 1 + i)));
 				fflush(stdout);
-				serial.sendBufHex(&cEvt->payload[1], evt->serial.evt.length - 4);
 			}
 			else printf("\n");
 		}
@@ -125,41 +123,58 @@ void HCI::eventCallback()
 
 void HCI::send(ushort opcode, Request * request, byte length, byte * payload)
 {
-	packet.serial.cmd.code = opcode;
-	packet.serial.type = (byte)TL::PacketType::BLECMD;
-	packet.serial.cmd.length = length;
-	memcpy(packet.serial.cmd.payload, payload, length);
-#ifdef STACK_DEBUG
-	commandTrace(&packet);
-#endif // STACK_DEBUG
-	thread = xTaskGetCurrentTaskHandle();
-	IPCCm::occupy(IPCC_CHANNEL_BLE, false);
-	
-	while (true)// while command status is Busy
+	if (xSemaphoreTake(mutex, 5000))
 	{
-		ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
-		while (!List::empty(&cmdEventQueue))
-		{
-			TL::EvtPacket *evt;
-			List::removeHead(&cmdEventQueue, (List::Node **)&evt);
+		packet.serial.cmd.code = opcode;
+		packet.serial.type = (byte)TL::PacketType::BLECMD;
+		packet.serial.cmd.length = length;
+		memcpy(packet.serial.cmd.payload, payload, length);
 #ifdef STACK_DEBUG
-			responseTrace(evt);
+		commandTrace(&packet);
 #endif // STACK_DEBUG
-			if (evt->serial.evt.code == TL_BLEEVT_CS_OPCODE)
+		thread = xTaskGetCurrentTaskHandle();
+		IPCCm::occupy(IPCC_CHANNEL_BLE, false);
+		bool remain = true;
+		while (remain)// while command status is Busy
+		{
+			if (!ulTaskNotifyTake(pdTRUE, 5000))
 			{
-				TL::CsEvt *commandStatusEvt = (TL::CsEvt*)evt->serial.evt.payload;
-				if (commandStatusEvt->cmdcode == opcode) *(byte *)request->parameter = commandStatusEvt->status;
-				if (commandStatusEvt->numcmd) return;
+				*((Status *)request->parameter) = Status::Timeout;
+				remain = false;
 			}
-			else
+			while (remain && !List::empty(&cmdEventQueue))
 			{
-				TL::CcEvt *commandCompleteEvt = (TL::CcEvt*)evt->serial.evt.payload;
-				if (request && commandCompleteEvt->cmdcode == opcode) memcpy(request->parameter, commandCompleteEvt->payload, std::min((uint)evt->serial.evt.length - TL_EVT_HDR_SIZE, request->length));
-				if (commandCompleteEvt->numcmd) return;
+				TL::EvtPacket *evt;
+				List::removeHead(&cmdEventQueue, (List::Node **)&evt);
+#ifdef STACK_DEBUG
+				responseTrace(evt);
+#endif // STACK_DEBUG
+				if (evt->serial.evt.code == TL_BLEEVT_CS_OPCODE)
+				{
+					TL::CsEvt *commandStatusEvt = (TL::CsEvt*)evt->serial.evt.payload;
+					if (commandStatusEvt->cmdcode == opcode) *(byte *)request->parameter = commandStatusEvt->status;
+					if (commandStatusEvt->numcmd)
+					{
+						remain = false;
+						break;
+					}
+				}
+				else
+				{
+					TL::CcEvt *commandCompleteEvt = (TL::CcEvt*)evt->serial.evt.payload;
+					if (request && commandCompleteEvt->cmdcode == opcode) memcpy(request->parameter, commandCompleteEvt->payload, std::min((uint)evt->serial.evt.length - TL_EVT_HDR_SIZE, request->length));
+					if (commandCompleteEvt->numcmd)
+					{
+						remain = false;
+						break;
+					}
+				}
 			}
 		}
+		xSemaphoreGive(mutex);
 	}
 }
+
 
 void HCI::init(void(* nextStage)(), TaskHandle_t thread)
 {
@@ -172,5 +187,6 @@ void HCI::init(void(* nextStage)(), TaskHandle_t thread)
 	IPCCm::setCallBack(eventCallback, IPCCm::Direction::Rx, IPCC_CHANNEL_BLE);
 	IPCCm::expect(IPCCm::Direction::Rx, IPCC_CHANNEL_BLE);
 	HCI::thread = thread;
+	mutex = xSemaphoreCreateMutex();
 	nextStage();
 }

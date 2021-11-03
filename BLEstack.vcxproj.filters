@@ -716,12 +716,6 @@
     <ClCompile Include="Project\SMPS.cpp">
       <Filter>Source files\Project</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\Sources\Codes\Libraries\C_C++\Periphery\Serial.cpp">
-      <Filter>Source files\Project</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\Sources\Codes\Libraries\C_C++\Periphery\SerialPort.cpp">
-      <Filter>Source files\Project</Filter>
-    </ClCompile>
     <ClCompile Include="Project\BLE\BLE.cpp">
       <Filter>Source files\Project\BLE</Filter>
     </ClCompile>
@@ -764,17 +758,11 @@
     <ClCompile Include="Project\BLE\Hardware\CPU2.cpp">
       <Filter>Source files\Project\BLE\Hardware</Filter>
     </ClCompile>
-    <ClCompile Include="Project\BLE\Hardware\HwSemaphore.cpp">
-      <Filter>Source files\Project\BLE\Hardware</Filter>
-    </ClCompile>
     <ClCompile Include="Project\BLE\Hardware\IPCC.cpp">
       <Filter>Source files\Project\BLE\Hardware</Filter>
     </ClCompile>
     <ClCompile Include="Project\BLE\BS.cpp">
       <Filter>Source files\Project\BLE</Filter>
-    </ClCompile>
-    <ClCompile Include="Project\Debug.cpp">
-      <Filter>Source files\Project</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -794,9 +782,6 @@
     </ClInclude>
     <ClInclude Include="Project\BLE\uuid.h">
       <Filter>Header files\Project\BLE</Filter>
-    </ClInclude>
-    <ClInclude Include="Project\BLE\Hardware\HwSemaphore.h">
-      <Filter>Header files\Project\BLE\Hardware</Filter>
     </ClInclude>
     <ClInclude Include="Project\RTC.hpp">
       <Filter>Header files\Project</Filter>
@@ -852,14 +837,11 @@
     <ClInclude Include="Project\BLE\BS.hpp">
       <Filter>Header files\Project\BLE</Filter>
     </ClInclude>
-    <ClInclude Include="Project\BLE\StackConfig.hpp">
-      <Filter>Header files\Project\BLE</Filter>
-    </ClInclude>
-    <ClInclude Include="Project\Debug.h">
-      <Filter>Header files\Project</Filter>
-    </ClInclude>
     <ClInclude Include="Project\CoreSettings.h">
       <Filter>Header files\Project</Filter>
+    </ClInclude>
+    <ClInclude Include="Project\StackConfig.hpp">
+      <Filter>Header files\Project\BLE</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

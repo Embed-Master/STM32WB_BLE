@@ -42,7 +42,7 @@ private:
 	Context context;
 	CharConfig *config;
 	
-	static inline void connectionSet(ushort con) { connection = con; }  // kostil
+	static inline void connectionSet(ushort con) { connection = con; }// kostil
 	static Service::EvtStatus event(TL::Event * evt);
 	static void init();
 	

@@ -4,11 +4,530 @@
 
 class LE
 {
+public:
+	struct SupportedCommands
+	{
+		struct _0
+		{
+			byte HCI_Inquiry : 1;
+			byte HCI_Inquiry_Cancel : 1;
+			byte HCI_Periodic_Inquiry_Mode : 1;
+			byte HCI_Exit_Periodic_Inquiry_Mode : 1;
+			byte HCI_Create_Connection : 1;
+			byte HCI_Disconnect : 1;
+			byte HCI_Add_SCO_Connection_deprecated : 1;
+			byte HCI_Create_Connection_Cancel : 1;
+		} st_0;
+		struct _1
+		{
+			byte HCI_Accept_Connection_Request : 1;
+			byte HCI_Reject_Connection_Request : 1;
+			byte HCI_Link_Key_Request_Reply : 1;
+			byte HCI_Link_Key_Request_Negative_Reply : 1;
+			byte HCI_PIN_Code_Request_Reply : 1;
+			byte HCI_PIN_Code_Request_Negative_Reply : 1;
+			byte HCI_Change_Connection_Packet_Type : 1;
+			byte HCI_Authentication_Requested : 1;
+		} st_1;
+		struct _2
+		{
+			byte HCI_Set_Connection_Encryption : 1;
+			byte HCI_Change_Connection_Link_Key : 1;
+			byte HCI_Master_Link_Key : 1;
+			byte HCI_Remote_Name_Request : 1;
+			byte HCI_Remote_Name_Request_Cancel : 1;
+			byte HCI_Read_Remote_Supported_Features : 1;
+			byte HCI_Read_Remote_Extended_Features : 1;
+			byte HCI_Read_Remote_Version_Information : 1;
+		} st_2;
+		struct _3
+		{
+			byte HCI_Read_Clock_Offset : 1;
+			byte HCI_Read_LMP_Handle : 1;
+			byte Reserved_for_future_use : 6;
+		} st_3;
+		struct _4
+		{
+			byte Reserved_for_future_use : 1;
+			byte HCI_Hold_Mode : 1;
+			byte HCI_Sniff_Mode : 1;
+			byte HCI_Exit_Sniff_Mode : 1;
+			byte Previously_used1 : 1;
+			byte Previously_used2 : 1;
+			byte HCI_QoS_Setup : 1;
+			byte HCI_Role_Discovery : 1;
+		} st_4;
+		struct _5
+		{
+			byte HCI_Switch_Role : 1;
+			byte HCI_Read_Link_Policy_Settings : 1;
+			byte HCI_Write_Link_Policy_Settings : 1;
+			byte HCI_Read_Default_Link_Policy_Settings : 1;
+			byte HCI_Write_Default_Link_Policy_Settings : 1;
+			byte HCI_Flow_Specification : 1;
+			byte HCI_Set_Event_Mask : 1;
+			byte HCI_Reset : 1;
+		} st_5;
+		struct _6
+		{
+			byte HCI_Set_Event_Filter : 1;
+			byte HCI_Flush : 1;
+			byte HCI_Read_PIN_Type : 1;
+			byte HCI_Write_PIN_Type : 1;
+			byte Previously_used : 1;
+			byte HCI_Read_Stored_Link_Key : 1;
+			byte HCI_Write_Stored_Link_Key : 1;
+			byte HCI_Delete_Stored_Link_Key : 1;
+		} st_6;
+		struct _7
+		{
+			byte HCI_Write_Local_Name : 1;
+			byte HCI_Read_Local_Name : 1;
+			byte HCI_Read_Connection_Accept_Timeout : 1;
+			byte HCI_Write_Connection_Accept_Timeout : 1;
+			byte HCI_Read_Page_Timeout : 1;
+			byte HCI_Write_Page_Timeout : 1;
+			byte HCI_Read_Scan_Enable : 1;
+			byte HCI_Write_Scan_Enable : 1;
+		} st_7;
+		struct _8
+		{
+			byte HCI_Read_Page_Scan_Activity : 1;
+			byte HCI_Write_Page_Scan_Activity : 1;
+			byte HCI_Read_Inquiry_Scan_Activity : 1;
+			byte HCI_Write_Inquiry_Scan_Activity : 1;
+			byte HCI_Read_Authentication_Enable : 1;
+			byte HCI_Write_Authentication_Enable : 1;
+			byte HCI_Read_Encryption_Mode_deprecated : 1;
+			byte HCI_Write_Encryption_Mode_deprecated : 1;
+		} st_8;
+		struct _9
+		{
+			byte HCI_Read_Class_Of_Device : 1;
+			byte HCI_Write_Class_Of_Device : 1;
+			byte HCI_Read_Voice_Setting : 1;
+			byte HCI_Write_Voice_Setting : 1;
+			byte HCI_Read_Automatic_Flush_Timeout : 1;
+			byte HCI_Write_Automatic_Flush_Timeout : 1;
+			byte HCI_Read_Num_Broadcast_Retransmissions : 1;
+			byte HCI_Write_Num_Broadcast_Retransmissions : 1;
+		} st_9;
+		struct _10
+		{
+			byte HCI_Read_Hold_Mode_Activity : 1;
+			byte HCI_Write_Hold_Mode_Activity : 1;
+			byte HCI_Read_Transmit_Power_Level : 1;
+			byte HCI_Read_Synchronous_Flow_Control_Enable : 1;
+			byte HCI_Write_Synchronous_Flow_Control_Enable : 1;
+			byte HCI_Set_Controller_To_Host_Flow_Control : 1;
+			byte HCI_Host_Buffer_Size : 1;
+			byte HCI_Host_Number_Of_Completed_Packets : 1;
+		} st_10;
+		struct _11
+		{
+			byte HCI_Read_Link_Supervision_Timeout : 1;
+			byte HCI_Write_Link_Supervision_Timeout : 1;
+			byte HCI_Read_Number_Of_Supported_IAC : 1;
+			byte HCI_Read_Current_IAC_LAP : 1;
+			byte HCI_Write_Current_IAC_LAP : 1;
+			byte HCI_Read_Page_Scan_Mode_Period_deprecated : 1;
+			byte HCI_Write_Page_Scan_Mode_Period_deprecated : 1;
+			byte HCI_Read_Page_Scan_Mode_deprecated : 1;
+		} st_11;
+		struct _12
+		{
+			byte HCI_Write_Page_Scan_Mode_deprecated : 1;
+			byte HCI_Set_AFH_Host_Channel_Classification : 1;
+			byte Reserved_for_future_use : 2;
+			byte HCI_Read_Inquiry_Scan_Type : 1;
+			byte HCI_Write_Inquiry_Scan_Type : 1;
+			byte HCI_Read_Inquiry_Mode : 1;
+			byte HCI_Write_Inquiry_Mode : 1;
+		} st_12;
+		struct _13
+		{
+			byte HCI_Read_Page_Scan_Type : 1;
+			byte HCI_Write_Page_Scan_Type : 1;
+			byte HCI_Read_AFH_Channel_Assessment_Mode : 1;
+			byte HCI_Write_AFH_Channel_Assessment_Mode : 1;
+			byte Reserved_for_future_use : 4;
+		} st_13;
+		struct _14
+		{
+			byte Reserved_for_future_use : 3;
+			byte HCI_Read_Local_Version_Information : 1;
+			byte Reserved_for_future_use2 : 1;
+			byte HCI_Read_Local_Supported_Features : 1;
+			byte HCI_Read_Local_Extended_Features : 1;
+			byte HCI_Read_Buffer_Size : 1;
+		} st_14;
+		struct _15
+		{
+			byte HCI_Read_Country_Code_deprecated : 1;
+			byte HCI_Read_BD_ADDR : 1;
+			byte HCI_Read_Failed_Contact_Counter : 1;
+			byte HCI_Reset_Failed_Contact_Counter : 1;
+			byte HCI_Read_Link_Quality : 1;
+			byte HCI_Read_RSSI : 1;
+			byte HCI_Read_AFH_Channel_Map : 1;
+			byte HCI_Read_Clock : 1;
+		} st_15;
+		struct _16
+		{
+			byte HCI_Read_Loopback_Mode : 1;
+			byte HCI_Write_Loopback_Mode : 1;
+			byte HCI_Enable_Device_Under_Test_Mode : 1;
+			byte HCI_Setup_Synchronous_Connection_Request : 1;
+			byte HCI_Accept_Synchronous_Connection_Request : 1;
+			byte HCI_Reject_Synchronous_Connection_Request : 1;
+			byte Reserved_for_future_use : 2;
+		} st_16;
+		struct _17
+		{
+			byte HCI_Read_Extended_Inquiry_Response : 1;
+			byte HCI_Write_Extended_Inquiry_Response : 1;
+			byte HCI_Refresh_Encryption_Key : 1;
+			byte Reserved_for_future_use : 1;
+			byte HCI_Sniff_Subrating : 1;
+			byte HCI_Read_Simple_Pairing_Mode : 1;
+			byte HCI_Write_Simple_Pairing_Mode : 1;
+			byte HCI_Read_Local_OOB_Data : 1;
+		} st_17;
+		struct _18
+		{
+			byte HCI_Read_Inquiry_Response_Transmit_Power_Level : 1;
+			byte HCI_Write_Inquiry_Transmit_Power_Level : 1;
+			byte HCI_Read_Default_Erroneous_Data_Reporting : 1;
+			byte HCI_Write_Default_Erroneous_Data_Reporting : 1;
+			byte Reserved_for_future_use : 3;
+			byte HCI_IO_Capability_Request_Reply : 1;
+		} st_18;
+		struct _19
+		{
+			byte HCI_User_Confirmation_Request_Reply : 1;
+			byte HCI_User_Confirmation_Request_Negative_Reply : 1;
+			byte HCI_User_Passkey_Request_Reply : 1;
+			byte HCI_User_Passkey_Request_Negative_Reply : 1;
+			byte HCI_Remote_OOB_Data_Request_Reply : 1;
+			byte HCI_Write_Simple_Pairing_Debug_Mode : 1;
+			byte HCI_Enhanced_Flush : 1;
+			byte HCI_Remote_OOB_Data_Request_Negative_Reply : 1;
+		} st_19;
+		struct _20
+		{
+			byte Reserved_for_future_use : 2;
+			byte HCI_Send_Keypress_Notification : 1;
+			byte HCI_IO_Capability_Request_Negative_Reply : 1;
+			byte HCI_Read_Encryption_Key_Size : 1;
+			byte Reserved_for_future_use2 : 3;
+		} st_20;
+		struct _21
+		{
+			byte HCI_Create_Physical_Link : 1;
+			byte HCI_Accept_Physical_Link : 1;
+			byte HCI_Disconnect_Physical_Link : 1;
+			byte HCI_Create_Logical_Link : 1;
+			byte HCI_Accept_Logical_Link : 1;
+			byte HCI_Disconnect_Logical_Link : 1;
+			byte HCI_Logical_Link_Cancel : 1;
+			byte HCI_Flow_Spec_Modify : 1;
+		} st_21;
+		struct _22
+		{
+			byte HCI_Read_Logical_Link_Accept_Timeout : 1;
+			byte HCI_Write_Logical_Link_Accept_Timeout : 1;
+			byte HCI_Set_Event_Mask_Page_2 : 1;
+			byte HCI_Read_Location_Data : 1;
+			byte HCI_Write_Location_Data : 1;
+			byte HCI_Read_Local_AMP_Info : 1;
+			byte HCI_Read_Local_AMP_ASSOC : 1;
+			byte HCI_Write_Remote_AMP_ASSOC : 1;
+		} st_22;
+		struct _23
+		{
+			byte HCI_Read_Flow_Control_Mode : 1;
+			byte HCI_Write_Flow_Control_Mode : 1;
+			byte HCI_Read_Data_Block_Size : 1;
+			byte Reserved_for_future_use : 2;
+			byte HCI_Enable_AMP_Receiver_Reports : 1;
+			byte HCI_AMP_Test_End : 1;
+			byte HCI_AMP_Test : 1;
+		} st_23;
+		struct _24
+		{
+			byte HCI_Read_Enhanced_Transmit_Power_Level : 1;
+			byte Reserved_for_future_use : 1;
+			byte HCI_Read_Best_Effort_Flush_Timeout : 1;
+			byte HCI_Write_Best_Effort_Flush_Timeout : 1;
+			byte HCI_Short_Range_Mode : 1;
+			byte HCI_Read_LE_Host_Support : 1;
+			byte HCI_Write_LE_Host_Support : 1;
+			byte Reserved_for_future_use2 : 1;
+		} st_24;
+		struct _25
+		{
+			byte HCI_LE_Set_Event_Mask : 1;
+			byte HCI_LE_Read_Buffer_Size_v1 : 1;
+			byte HCI_LE_Read_Local_Supported_Features : 1;
+			byte Reserved_for_future_use : 1;
+			byte HCI_LE_Set_Random_Address : 1;
+			byte HCI_LE_Set_Advertising_Parameters : 1;
+			byte HCI_LE_Read_Advertising_Physical_Channel_Tx_Power : 1;
+			byte HCI_LE_Set_Advertising_Data : 1;
+		} st_25;
+		struct _26
+		{
+			byte HCI_LE_Set_Scan_Response_Data : 1;
+			byte HCI_LE_Set_Advertising_Enable : 1;
+			byte HCI_LE_Set_Scan_Parameters : 1;
+			byte HCI_LE_Set_Scan_Enable : 1;
+			byte HCI_LE_Create_Connection : 1;
+			byte HCI_LE_Create_Connection_Cancel : 1;
+			byte HCI_LE_Read_White_List_Size : 1;
+			byte HCI_LE_Clear_White_List : 1;
+		} st_26;
+		struct _27
+		{
+			byte HCI_LE_Add_Device_To_White_List : 1;
+			byte HCI_LE_Remove_Device_From_White_List : 1;
+			byte HCI_LE_Connection_Update : 1;
+			byte HCI_LE_Set_Host_Channel_Classification : 1;
+			byte HCI_LE_Read_Channel_Map : 1;
+			byte HCI_LE_Read_Remote_Features : 1;
+			byte HCI_LE_Encrypt : 1;
+			byte HCI_LE_Rand : 1;
+		} st_27;
+		struct _28
+		{
+			byte HCI_LE_Enable_Encryption : 1;
+			byte HCI_LE_Long_Term_Key_Request_Reply : 1;
+			byte HCI_LE_Long_Term_Key_Request_Negative_Reply : 1;
+			byte HCI_LE_Read_Supported_States : 1;
+			byte HCI_LE_Receiver_Test_v1 : 1;
+			byte HCI_LE_Transmitter_Test_v1 : 1;
+			byte HCI_LE_Test_End : 1;
+			byte Reserved_for_future_use : 1;
+		} st_28;
+		struct _29
+		{
+			byte Reserved_for_future_use : 3;
+			byte HCI_Enhanced_Setup_Synchronous_Connection : 1;
+			byte HCI_Enhanced_Accept_Synchronous_Connection : 1;
+			byte HCI_Read_Local_Supported_Codecs : 1;
+			byte HCI_Set_MWS_Channel_Parameters : 1;
+			byte HCI_Set_External_Frame_Configuration : 1;
+		} st_29;
+		struct _30
+		{
+			byte HCI_Set_MWS_Signaling : 1;
+			byte HCI_Set_MWS_Transport_Layer : 1;
+			byte HCI_Set_MWS_Scan_Frequency_Table : 1;
+			byte HCI_Get_MWS_Transport_Layer_Configuration : 1;
+			byte HCI_Set_MWS_PATTERN_Configuration : 1;
+			byte HCI_Set_Triggered_Clock_Capture : 1;
+			byte HCI_Truncated_Page : 1;
+			byte HCI_Truncated_Page_Cancel : 1;
+		} st_30;
+		struct _31
+		{
+			byte HCI_Set_Connectionless_Slave_Broadcast : 1;
+			byte HCI_Set_Connectionless_Slave_Broadcast_Receive : 1;
+			byte HCI_Start_Synchronization_Train : 1;
+			byte HCI_Receive_Synchronization_Train : 1;
+			byte HCI_Set_Reserved_LT_ADDR : 1;
+			byte HCI_Delete_Reserved_LT_ADDR : 1;
+			byte HCI_Set_Connectionless_Slave_Broadcast_Data : 1;
+			byte HCI_Read_Synchronization_Train_Parameters : 1;
+		} st_31;
+		struct _32
+		{
+			byte HCI_Write_Synchronization_Train_Parameters : 1;
+			byte HCI_Remote_OOB_Extended_Data_Request_Reply : 1;
+			byte HCI_Read_Secure_Connections_Host_Support : 1;
+			byte HCI_Write_Secure_Connections_Host_Support : 1;
+			byte HCI_Read_Authenticated_Payload_Timeout : 1;
+			byte HCI_Write_Authenticated_Payload_Timeout : 1;
+			byte HCI_Read_Local_OOB_Extended_Data : 1;
+			byte HCI_Write_Secure_Connections_Test_Mode : 1;
+		} st_32;
+		struct _33
+		{
+			byte HCI_Read_Extended_Page_Timeout : 1;
+			byte HCI_Write_Extended_Page_Timeout : 1;
+			byte HCI_Read_Extended_Inquiry_Length : 1;
+			byte HCI_Write_Extended_Inquiry_Length : 1;
+			byte HCI_LE_Remote_Connection_Parameter_Request_Reply : 1;
+			byte HCI_LE_Remote_Connection_Parameter_Request_Negative_Reply : 1;
+			byte HCI_LE_Set_Data_Length : 1;
+			byte HCI_LE_Read_Suggested_Default_Data_Length : 1;
+		} st_33;
+		struct _34
+		{
+			byte HCI_LE_Write_Suggested_Default_Data_Length : 1;
+			byte HCI_LE_Read_Local_P256_Public_Key : 1;
+			byte HCI_LE_Generate_DHKey_v1 : 1;
+			byte HCI_LE_Add_Device_To_Resolving_List : 1;
+			byte HCI_LE_Remove_Device_From_Resolving_List : 1;
+			byte HCI_LE_Clear_Resolving_List : 1;
+			byte HCI_LE_Read_Resolving_List_Size : 1;
+			byte HCI_LE_Read_Peer_Resolvable_Address : 1;
+		} st_34;
+		struct _35
+		{
+			byte HCI_LE_Read_Local_Resolvable_Address : 1;
+			byte HCI_LE_Set_Address_Resolution_Enable : 1;
+			byte HCI_LE_Set_Resolvable_Private_Address_Timeout : 1;
+			byte HCI_LE_Read_Maximum_Data_Length : 1;
+			byte HCI_LE_Read_PHY : 1;
+			byte HCI_LE_Set_Default_PHY : 1;
+			byte HCI_LE_Set_PHY : 1;
+			byte HCI_LE_Receiver_Test_v2 : 1;
+		} st_35;
+		struct _36
+		{
+			byte HCI_LE_Transmitter_Test_v2 : 1;
+			byte HCI_LE_Set_Advertising_Set_Random_Address : 1;
+			byte HCI_LE_Set_Extended_Advertising_Parameters : 1;
+			byte HCI_LE_Set_Extended_Advertising_Data : 1;
+			byte HCI_LE_Set_Extended_Scan_Response_Data : 1;
+			byte HCI_LE_Set_Extended_Advertising_Enable : 1;
+			byte HCI_LE_Read_Maximum_Advertising_Data_Length : 1;
+			byte HCI_LE_Read_Number_of_Supported_Advertising_Sets : 1;
+		} st_36;
+		struct _37
+		{
+			byte HCI_LE_Remove_Advertising_Set : 1;
+			byte HCI_LE_Clear_Advertising_Sets : 1;
+			byte HCI_LE_Set_Periodic_Advertising_Parameters : 1;
+			byte HCI_LE_Set_Periodic_Advertising_Data : 1;
+			byte HCI_LE_Set_Periodic_Advertising_Enable : 1;
+			byte HCI_LE_Set_Extended_Scan_Parameters : 1;
+			byte HCI_LE_Set_Extended_Scan_Enable : 1;
+			byte HCI_LE_Extended_Create_Connection : 1;
+		} st_37;
+		struct _38
+		{
+			byte HCI_LE_Periodic_Advertising_Create_Sync : 1;
+			byte HCI_LE_Periodic_Advertising_Create_Sync_Cancel : 1;
+			byte HCI_LE_Periodic_Advertising_Terminate_Sync : 1;
+			byte HCI_LE_Add_Device_To_Periodic_Advertiser_List : 1;
+			byte HCI_LE_Remove_Device_From_Periodic_Advertiser_List : 1;
+			byte HCI_LE_Clear_Periodic_Advertiser_List : 1;
+			byte HCI_LE_Read_Periodic_Advertiser_List_Size : 1;
+			byte HCI_LE_Read_Transmit_Power : 1;
+		} st_38;
+		struct _39
+		{
+			byte HCI_LE_Read_RF_Path_Compensation : 1;
+			byte HCI_LE_Write_RF_Path_Compensation : 1;
+			byte HCI_LE_Set_Privacy_Mode : 1;
+			byte HCI_LE_Receiver_Test_v3 : 1;
+			byte HCI_LE_Transmitter_Test_v3 : 1;
+			byte HCI_LE_Set_Connectionless_CTE_Transmit_Parameters : 1;
+			byte HCI_LE_Set_Connectionless_CTE_Transmit_Enable : 1;
+			byte HCI_LE_Set_Connectionless_IQ_Sampling_Enable : 1;
+		} st_39;
+		struct _40
+		{
+			byte HCI_LE_Set_Connection_CTE_Receive_Parameters : 1;
+			byte HCI_LE_Set_Connection_CTE_Transmit_Parameters : 1;
+			byte HCI_LE_Connection_CTE_Request_Enable : 1;
+			byte HCI_LE_Connection_CTE_Response_Enable : 1;
+			byte HCI_LE_Read_Antenna_Information : 1;
+			byte HCI_LE_Set_Periodic_Advertising_Receive_Enable : 1;
+			byte HCI_LE_Periodic_Advertising_Sync_Transfer : 1;
+			byte HCI_LE_Periodic_Advertising_Set_Info_Transfer : 1;
+		} st_40;
+		struct _41
+		{
+			byte HCI_LE_Set_Periodic_Advertising_Sync_Transfer_Parameters : 1;
+			byte HCI_LE_Set_Default_Periodic_Advertising_Sync_Transfer_Parameters : 1;
+			byte HCI_LE_Generate_DHKey_v2 : 1;
+			byte HCI_Read_Local_Simple_Pairing_Options : 1;
+			byte HCI_LE_Modify_Sleep_Clock_Accuracy : 1;
+			byte HCI_LE_Read_Buffer_Size_v2 : 1;
+			byte HCI_LE_Read_ISO_TX_Sync : 1;
+			byte HCI_LE_Set_CIG_Parameters : 1;
+		} st_41;
+		struct _42
+		{
+			byte HCI_LE_Set_CIG_Parameters_Test : 1;
+			byte HCI_LE_Create_CIS : 1;
+			byte HCI_LE_Remove_CIG : 1;
+			byte HCI_LE_Accept_CIS_Request : 1;
+			byte HCI_LE_Reject_CIS_Request : 1;
+			byte HCI_LE_Create_BIG : 1;
+			byte HCI_LE_Create_BIG_Test : 1;
+			byte HCI_LE_Terminate_BIG : 1;
+		} st_42;
+		struct _43
+		{
+			byte HCI_LE_BIG_Create_Sync : 1;
+			byte HCI_LE_BIG_Terminate_Sync : 1;
+			byte HCI_LE_Request_Peer_SCA : 1;
+			byte HCI_LE_Setup_ISO_Data_Path : 1;
+			byte HCI_LE_Remove_ISO_Data_Path : 1;
+			byte HCI_LE_ISO_Transmit_Test : 1;
+			byte HCI_LE_ISO_Receive_Test : 1;
+			byte HCI_LE_ISO_Read_Test_Counters : 1;
+		} st_43;
+		struct _44
+		{
+			byte HCI_LE_ISO_Test_End : 1;
+			byte HCI_LE_Set_Host_Feature : 1;
+			byte HCI_LE_Read_ISO_Link_Quality : 1;
+			byte HCI_LE_Enhanced_Read_Transmit_Power_Level : 1;
+			byte HCI_LE_Read_Remote_Transmit_Power_Level : 1;
+			byte HCI_LE_Set_Path_Loss_Reporting_Parameters : 1;
+			byte HCI_LE_Set_Path_Loss_Reporting_Enable : 1;
+			byte HCI_LE_Set_Transmit_Power_Reporting_Enable : 1;
+		} st_44;
+		struct _45
+		{
+			byte HCI_LE_Transmitter_Test_v4 : 1;
+			byte HCI_Set_Ecosystem_Base_Interval : 1;
+			byte HCI_Read_Local_Supported_Codecs_v2 : 1;
+			byte HCI_Read_Local_Supported_Codec_Capabilities : 1;
+			byte HCI_Read_Local_Supported_Controller_Delay : 1;
+			byte HCI_Configure_Data_Path : 1;
+			byte Reserved_for_future_use : 2;
+		} st_45;
+	};
+	struct Disconnect
+	{
+		struct Com0
+		{
+			ushort handle;
+			byte reason;
+		} __attribute__((packed));
+		enum class Reason : byte
+		{
+			AuthenticationFailure = 0x05,
+			RemoteUserTerminatedConnection = 0x13,
+			RemoteDeviceTerminatedConnectionDueToLowResources = 0x14,
+			RemoteDeviceTerminatedConnectionDueToPowerOff = 0x15,
+			UnsupportedRemoteFeature = 0x1A,
+			UnacceptableConnectionParameters = 0x3B
+		};
+	};
+	
+private:
 	enum class Opcode : ushort
 	{
+		Disconnect = 0x0406,
 		Reset = 0x0C03,
+		ReadLocalSupportedCommands = 0x1002,
 		SetDefaultPhy = 0x2031,
-		ReadPhy = 0x2030
+		ReadPhy = 0x2030,
+		ReadRSSI = 0x1405
+	};
+	struct ReadLocalSupportedCommands
+	{
+		struct Response
+		{
+			HCI::Status status;
+			SupportedCommands commands;
+		} __attribute__((packed));
 	};
 	struct SetDefaultPhy
 	{
@@ -30,34 +549,47 @@ class LE
 			byte rxPhy;
 		} __attribute__((packed));
 	};
+	struct ReadRssi
+	{
+		struct Com0
+		{
+			ushort handle;
+		} __attribute__((packed));
+		struct Response
+		{
+			HCI::Status status;
+			ushort handle;
+			signed char rssi;
+		} __attribute__((packed));
+	};
 	
 public:
-//	/**
-//	  * @brief The @ref disconnect is used to terminate an existing connection. The
-//	Connection_Handle command parameter indicates which connection is to be
-//	disconnected. The Reason command parameter indicates the reason for ending
-//	the connection. The remote Controller will receive the Reason command
-//	parameter in the @ref disconnection_complete_event event. All synchronous connections
-//	on a physical link should be disconnected before the ACL connection on the
-//	same physical connection is disconnected.
-//	(See Bluetooth Specification v.5.0, Vol. 2, Part E, 7.1.6)
-//	It is important to leave an 100 ms blank window before sending any new command (including system hardware reset),
-//	since immediately after @ref disconnection_complete_event event, system could save important information in non volatile memory.
-//	  * @param Connection_Handle Connection handle for which the command is given.
-//	  * Values:
-//	  - 0x0000 ... 0x0EFF
-//	  * @param Reason The reason for ending the connection.
-//	  * Values:
-//	  - 0x05: Authentication Failure
-//	  - 0x13: Remote User Terminated Connection
-//	  - 0x14: Remote Device Terminated Connection due to Low Resources
-//	  - 0x15: Remote Device Terminated Connection due to Power Off
-//	  - 0x1A: Unsupported Remote Feature
-//	  - 0x3B: Unacceptable Connection Parameters
-//	  * @retval Value indicating success or error code.
-//	*/
-//	static HCI::Status disconnect(ushort handle, byte reason);
-//
+	/**
+	  * @brief The @ref disconnect is used to terminate an existing connection. The
+	Connection_Handle command parameter indicates which connection is to be
+	disconnected. The Reason command parameter indicates the reason for ending
+	the connection. The remote Controller will receive the Reason command
+	parameter in the @ref disconnection_complete_event event. All synchronous connections
+	on a physical link should be disconnected before the ACL connection on the
+	same physical connection is disconnected.
+	(See Bluetooth Specification v.5.0, Vol. 2, Part E, 7.1.6)
+	It is important to leave an 100 ms blank window before sending any new command (including system hardware reset),
+	since immediately after @ref disconnection_complete_event event, system could save important information in non volatile memory.
+	  * @param Connection_Handle Connection handle for which the command is given.
+	  * Values:
+	  - 0x0000 ... 0x0EFF
+	  * @param Reason The reason for ending the connection.
+	  * Values:
+	  - 0x05: Authentication Failure
+	  - 0x13: Remote User Terminated Connection
+	  - 0x14: Remote Device Terminated Connection due to Low Resources
+	  - 0x15: Remote Device Terminated Connection due to Power Off
+	  - 0x1A: Unsupported Remote Feature
+	  - 0x3B: Unacceptable Connection Parameters
+	  * @retval Value indicating success or error code.
+	*/
+	static HCI::Status disconnect(ushort handle, Disconnect::Reason reason);
+
 //	/**
 //	  * @brief This command will obtain the values for the version information for the remote
 //	  device identified by the Connection_Handle parameter. The Connection_Handle
@@ -255,18 +787,18 @@ public:
 //	          */
 //	static HCI::Status readLocalVersionInformation(byte *version, ushort *revision, byte *LMP_PALversion, ushort *manufacturerName, ushort *LMP_PALsubversion);
 //
-//	/**
-//	  * @brief This command reads the list of HCI commands supported for the local Controller.
-//	  This command shall return the Supported_Commands configuration parameter.
-//	  It is implied that if a command is listed as supported, the feature underlying
-//	  that command is also supported.
-//	  (See Bluetooth Specification v.5.0, Vol. 2, Part E, 7.4.2)
-//	    * @param[out] Supported_Commands Bit mask for each HCI Command. If a bit is 1, the Controller supports the
-//	    corresponding command and the features required for the command.
-//	    Unsupported or undefined commands shall be set to 0.
-//	      * @retval Value indicating success or error code.
-//	      */
-//	static HCI::Status readLocalSupportedCommands(byte commands[64]);
+	/**
+	  * @brief This command reads the list of HCI commands supported for the local Controller.
+	  This command shall return the Supported_Commands configuration parameter.
+	  It is implied that if a command is listed as supported, the feature underlying
+	  that command is also supported.
+	  (See Bluetooth Specification v.5.0, Vol. 2, Part E, 7.4.2)
+	    * @param[out] Supported_Commands Bit mask for each HCI Command. If a bit is 1, the Controller supports the
+	    corresponding command and the features required for the command.
+	    Unsupported or undefined commands shall be set to 0.
+	      * @retval Value indicating success or error code.
+	      */
+	static HCI::Status readLocalSupportedCommands(SupportedCommands &commands);
 //
 //	/**
 //	  * @brief This command requests a list of the supported features for the local 
@@ -290,27 +822,27 @@ public:
 //	    * @retval Value indicating success or error code.
 //	    */
 //	static HCI::Status readBdAddr(byte address[6]);
-//
-//	/**
-//	  * @brief This command reads the Received Signal Strength Indication (RSSI) value from
-//	  a Controller.
-//	  For an LE transport, a Connection_Handle is used as the Handle command
-//	  parameter and return parameter. The meaning of the RSSI metric is an absolute
-//	  receiver signal strength value in dBm to +/- 6 dB accuracy. If the RSSI cannot
-//	  be read, the RSSI metric shall be set to 127.
-//	  (See Bluetooth Specification v.5.0, Vol. 2, Part E, 7.5.4)
-//	    * @param Connection_Handle Connection handle for which the command is given.
-//	    * Values:
-//	    - 0x0000 ... 0x0EFF
-//	    * @param[out] RSSI N Size: 1 Octet (signed integer)
-//	    Units: dBm
-//	      * Values:
-//	      - 127: RSSI not available
-//	      - -127 ... 20
-//	      * @retval Value indicating success or error code.
-//	      */
-//	static HCI::Status readRssi(ushort handle, byte *rssi);
-//
+
+	/**
+	  * @brief This command reads the Received Signal Strength Indication (RSSI) value from
+	  a Controller.
+	  For an LE transport, a Connection_Handle is used as the Handle command
+	  parameter and return parameter. The meaning of the RSSI metric is an absolute
+	  receiver signal strength value in dBm to +/- 6 dB accuracy. If the RSSI cannot
+	  be read, the RSSI metric shall be set to 127.
+	  (See Bluetooth Specification v.5.0, Vol. 2, Part E, 7.5.4)
+	    * @param Connection_Handle Connection handle for which the command is given.
+	    * Values:
+	    - 0x0000 ... 0x0EFF
+	    * @param[out] RSSI N Size: 1 Octet (signed integer)
+	    Units: dBm
+	      * Values:
+	      - 127: RSSI not available
+	      - -127 ... 20
+	      * @retval Value indicating success or error code.
+	      */
+	static HCI::Status readRssi(ushort handle, signed char &rssi);
+
 //	/**
 //	  * @brief The LE_Set_Event_Mask command is used to control which LE events are
 //	  generated by the HCI for the Host. If the bit in the LE_Event_Mask is set to a

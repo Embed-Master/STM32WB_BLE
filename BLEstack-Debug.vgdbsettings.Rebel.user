@@ -35,6 +35,10 @@
         <string>IPCC</string>
       </HardwareRegisterFilters>
     </Suggestions>
+    <LiveVariablePreferences>
+      <ViewMode>AllGlobals</ViewMode>
+      <FavoritesOnly>false</FavoritesOnly>
+    </LiveVariablePreferences>
     <HardwareRegisters>
       <HardwareRegisterRecord>
         <Name>IPCC.C1CR</Name>

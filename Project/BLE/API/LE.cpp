@@ -1,35 +1,17 @@
 #include "LE.hpp"
 #include "string.h"
 
-//HCI::Status LE::hci_disconnect(uint16_t Connection_Handle,
-//	uint8_t Reason)
-//{
-//	struct hci_request rq;
-//	uint8_t cmd_buffer[BLE_CMD_MAX_PARAM_LEN];
-//	hci_disconnect_cp0 *cp0 = (hci_disconnect_cp0*)(cmd_buffer);
-//	HCI::Status LE::status = 0;
-//	int index_input = 0;
-//	cp0->Connection_Handle = htob(Connection_Handle, 2);
-//	index_input += 2;
-//	cp0->Reason = htob(Reason, 1);
-//	index_input += 1;
-//	Osal_MemSet(&rq, 0, sizeof(rq));
-//	rq.ogf = 0x01;
-//	rq.ocf = 0x006;
-//	rq.event = 0x0F;
-//	rq.cparam = cmd_buffer;
-//	rq.clen = index_input;
-//	rq.rparam = &status;
-//	rq.rlen = 1;
-//	if (hci_send_req(&rq, FALSE) < 0)
-//		return BLE_STATUS_TIMEOUT;
-//	if (status) 
-//	{
-//		return status;
-//	}
-//	return BLE_STATUS_SUCCESS;
-//}
-//
+HCI::Status LE::disconnect(ushort handle, Disconnect::Reason reason)
+{
+	Disconnect::Com0 cmd;
+	cmd.handle = handle;
+	cmd.reason = (byte)reason;
+	HCI::Status status = HCI::Status::Success;
+	HCI::Request rq = { &status, 1 };
+	HCI::send((ushort)Opcode::Disconnect, &rq, sizeof(cmd), (byte *)&cmd);
+	return status;
+}
+
 //HCI::Status LE::hci_read_remote_version_information(uint16_t Connection_Handle)
 //{
 //	struct hci_request rq;
@@ -237,27 +219,16 @@ HCI::Status LE::reset()
 //	*LMP_PAL_Subversion = btoh(resp.LMP_PAL_Subversion, 2);
 //	return BLE_STATUS_SUCCESS;
 //}
-//
-//HCI::Status LE::hci_read_local_supported_commands(uint8_t Supported_Commands[64])
-//{
-//	struct hci_request rq;
-//	hci_read_local_supported_commands_rp0 resp;
-//	Osal_MemSet(&resp, 0, sizeof(resp));
-//	Osal_MemSet(&rq, 0, sizeof(rq));
-//	rq.ogf = 0x04;
-//	rq.ocf = 0x002;
-//	rq.rparam = &resp;
-//	rq.rlen = sizeof(resp);
-//	if (hci_send_req(&rq, FALSE) < 0)
-//		return BLE_STATUS_TIMEOUT;
-//	if (resp.Status) 
-//	{
-//		return resp.Status;
-//	}
-//	Osal_MemCpy((void *) Supported_Commands, (const void *) resp.Supported_Commands, 64);
-//	return BLE_STATUS_SUCCESS;
-//}
-//
+
+HCI::Status LE::readLocalSupportedCommands(SupportedCommands &commands)
+{
+	ReadLocalSupportedCommands::Response rsp = { };
+	HCI::Request rq = { &rsp, sizeof(rsp) };
+	HCI::send((ushort)Opcode::ReadLocalSupportedCommands, &rq);
+	if (rsp.status == HCI::Status::Success) commands = rsp.commands;
+	return rsp.status;
+}
+
 //HCI::Status LE::hci_read_local_supported_features(uint8_t LMP_Features[8])
 //{
 //	struct hci_request rq;
@@ -297,35 +268,18 @@ HCI::Status LE::reset()
 //	Osal_MemCpy((void *) BD_ADDR, (const void *) resp.BD_ADDR, 6);
 //	return BLE_STATUS_SUCCESS;
 //}
-//
-//HCI::Status LE::hci_read_rssi(uint16_t Connection_Handle,
-//	uint8_t *RSSI)
-//{
-//	struct hci_request rq;
-//	uint8_t cmd_buffer[BLE_CMD_MAX_PARAM_LEN];
-//	hci_read_rssi_cp0 *cp0 = (hci_read_rssi_cp0*)(cmd_buffer);
-//	hci_read_rssi_rp0 resp;
-//	Osal_MemSet(&resp, 0, sizeof(resp));
-//	int index_input = 0;
-//	cp0->Connection_Handle = htob(Connection_Handle, 2);
-//	index_input += 2;
-//	Osal_MemSet(&rq, 0, sizeof(rq));
-//	rq.ogf = 0x05;
-//	rq.ocf = 0x005;
-//	rq.cparam = cmd_buffer;
-//	rq.clen = index_input;
-//	rq.rparam = &resp;
-//	rq.rlen = sizeof(resp);
-//	if (hci_send_req(&rq, FALSE) < 0)
-//		return BLE_STATUS_TIMEOUT;
-//	if (resp.Status) 
-//	{
-//		return resp.Status;
-//	}
-//	*RSSI = btoh(resp.RSSI, 1);
-//	return BLE_STATUS_SUCCESS;
-//}
-//
+
+HCI::Status LE::readRssi(ushort handle, signed char &rssi)
+{
+	ReadRssi::Com0 cmd0;
+	cmd0.handle = handle;
+	ReadRssi::Response rsp = {};
+	HCI::Request rq = { &rsp, sizeof(rsp) };
+	HCI::send((ushort)Opcode::ReadRSSI, &rq, 2, (byte *)&cmd0);
+	if (rsp.status == HCI::Status::Success) rssi = rsp.rssi;
+	return rsp.status;
+}
+
 //HCI::Status LE::hci_le_set_event_mask(uint8_t LE_Event_Mask[8])
 //{
 //	struct hci_request rq;
