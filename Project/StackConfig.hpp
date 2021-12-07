@@ -4,7 +4,7 @@
  * Stack settings
  ******************************************************************************/
 //#define STACK_DEBUG
-#define STACK_VERSION						0.82
+#define STACK_VERSION						0.83
 #define BLE_FREERTOS_THREAD_PRIORITY		4// BLE OS thread priority; Higher number - higher priority
 #define BLE_ISR_PRIORITY_GROUPING			5
 #define BLE_FREERTOS_ISR_PRIORITY_GROUP		1// BLE ISR priority; Lower number - higher priority

@@ -182,7 +182,7 @@ HCI::Status GATT::updateCharValue(ushort service, ushort characteristic, byte of
 	cmd.characteristic = characteristic;
 	cmd.offset = offset;
 	cmd.length = length;
-	memcpy(&cmd.value, value, length);
+	memcpy(cmd.value, value, length);
 	HCI::Status status = HCI::Status::Success;
 	HCI::Request rq = { &status, 1 };
 	HCI::send((ushort)Opcode::UpdateCharacteristicValue, &rq, length + 6, (byte *)&cmd);

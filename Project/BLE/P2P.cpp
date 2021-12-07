@@ -112,10 +112,10 @@ void P2P::init()
 	}
 }
 
-P2P::P2P(GATT::UUID uuid, CharConfig conf[])
+P2P::P2P(GATT::UUID &&uuid, const CharConfig conf[])
 {
 	context.charCnt = 0;
-	CharConfig *ptr = conf;
+	const CharConfig *ptr = conf;
 	uint cnt = 0;
 	while (ptr++->properties) cnt++;
 	context.characteristic = new ushort[cnt];

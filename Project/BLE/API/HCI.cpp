@@ -175,7 +175,6 @@ void HCI::send(ushort opcode, Request * request, byte length, byte * payload)
 	}
 }
 
-
 void HCI::init(void(* nextStage)(), TaskHandle_t thread)
 {
 	xTaskCreate(eventHandler, "HCI::eventHandler", configMINIMAL_STACK_SIZE * 2, nullptr, BLE_FREERTOS_THREAD_PRIORITY, &eventHandlerHandle);

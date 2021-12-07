@@ -49,5 +49,5 @@ private:
 public:
 	bool updateValue(byte id, ushort length, byte *data);
 	static void allowRead();
-	P2P(GATT::UUID uuid, CharConfig conf[]);
+	P2P(GATT::UUID &&uuid, const CharConfig conf[]);
 };

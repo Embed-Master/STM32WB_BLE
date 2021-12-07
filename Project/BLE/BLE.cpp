@@ -145,6 +145,7 @@ void BLE::appNotification(TL::Event *evt)
 					context.connection = BLE::Connection::ConnectedServer;
 					context.settings.handle = connection_complete_event->Connection_Handle;
 					P2P::connectionSet(context.settings.handle);
+					for (auto p : appNotificationCallback) if (p) p(Notification::Connection);
 				}
 				break;
 			default: break;
